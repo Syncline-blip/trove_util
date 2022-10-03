@@ -1,0 +1,12 @@
+Configure command line options for trove:
+./trove [-f indexfile] OwenIsAGaymer -> Sample option is taking in the index-file and asking the program to list which files contain the word "OwenIsAGaymer" 
+-> If any of the files listed in the index file is missing during search, file is not listed. 
+-> If search is successful, list the files and exit with success, otherwise fail.
+
+./trove [-f indexfile] [-b | -r | -u] [-l length] filelist 
+-> Sample invocation asks trove to create a new index file, remove information form existing index, or update an existing index. 
+-> give file will provide files/directories to be indexed. Note:
+-> Directories + Subdirectories are traversed and index.
+-> Directly giving a file is to be indexed.
+-> Files given can be anything and everything
+-> Exit success if no fail, if not, failure
