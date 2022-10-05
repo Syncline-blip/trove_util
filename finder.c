@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include  <dirent.h>
 
 // char findWord(char path[], char word[])
 // {
@@ -32,6 +33,7 @@ int isDirectory(char *path)
     return S_ISREG(statbuf.st_mode);
 }
 
+
 //Used to find words in a provided path (file or directory) match word length constraint.
 // char* wordLength(char path[], int length)
 // {
@@ -44,6 +46,29 @@ int isDirectory(char *path)
   
 // }
 
+//From workshop -> need to change to suit our situation
+void list_directory(char *dirname)        
+{
+    DIR             *dirp;
+    struct dirent   *dp;
+
+//  ENSURE THAT WE CAN OPEN (read-only) THE REQUIRED DIRECTORY
+    dirp       = opendir(dirname);
+    if(dirp == NULL) {
+        perror( dirname );
+        exit(EXIT_FAILURE);
+    }
+
+//  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
+    while((dp = readdir(dirp)) != NULL) {  
+        printf( "%s\n", dp->d_name );
+    }
+
+//  CLOSE THE DIRECTORY
+    closedir(dirp);
+}
+
+
 void pathFinder(char path[])
 {
  // i think '-r' will require this to see if a path in the filelist is in the trove-file 
@@ -51,3 +76,4 @@ void pathFinder(char path[])
   //If a matching path is found, remove it from the trove-file
   
 }
+
