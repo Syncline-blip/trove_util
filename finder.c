@@ -14,7 +14,10 @@
 // char findWord(char path[], char word[])
 // {
 //   char absPath ;
-//   //Check if the path is a file or directory
+//   //if(isDirectory(&path) == 0)
+//        {
+
+//        }
 //   // If is directory -> open and traverse subdirectory
 //   // else -> read file and see if the word is contained in the file.
   

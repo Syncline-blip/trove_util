@@ -2,13 +2,13 @@
 
 PROJECT	= trove
 HEADERS = $(PROJECT).h
-OBJ		= trove.o finder.o
+OBJ 	= trove.o finder.o
 
 C11 = cc -std=c11
 CFLAGS = -Wall -Werror
 
 $(PROJECT) : $(OBJ)
-	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ) -lm
+	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ)
 
 
 %.o : %.c $(HEADERS)
