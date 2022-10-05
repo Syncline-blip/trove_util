@@ -41,4 +41,5 @@ int main(int argc, char *argv[])
     {
         printf("\nis file\n");
     }
+    list_directory(argv[1]);
 }

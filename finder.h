@@ -6,3 +6,4 @@
 // char* wordLength(char path[], int length);
 void pathFinder(char path[]);
 int isDirectory(char *path);
+void list_directory(char *dirname);

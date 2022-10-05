@@ -48,7 +48,9 @@ int isDirectory(char *path)
 
 //From workshop -> need to change to suit our situation
 void list_directory(char *dirname)        
-{
+{   
+
+    
     DIR             *dirp;
     struct dirent   *dp;
 
