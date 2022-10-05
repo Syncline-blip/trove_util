@@ -1,6 +1,6 @@
 // trove main source code
 #include "trove.h"
-
+#include "finder.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,10 +26,19 @@ void usage()
 
 int main(int argc, char *argv[])
 {
-    if(argc != 3)
+    // if(argc != 3)
+    // {
+    //     printf("Invalid Argument Count:\n Usage:");
+    //     usage();
+    //     exit(EXIT_FAILURE);
+    // }
+    int res = isDirectory(argv[1]);
+    if(res == 0)
     {
-        printf("Invalid Argument Count:\n Usage:");
-        usage();
-        exit(EXIT_FAILURE);
+        printf("\ninput is a directory\n");
+    }
+    else
+    {
+        printf("\nis file\n");
     }
 }

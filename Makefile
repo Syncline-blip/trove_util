@@ -2,7 +2,7 @@
 
 PROJECT	= trove
 HEADERS = $(PROJECT).h
-OBJ		= trove.o
+OBJ		= trove.o finder.o
 
 C11 = cc -std=c11
 CFLAGS = -Wall -Werror
