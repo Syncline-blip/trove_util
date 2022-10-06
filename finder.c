@@ -1,17 +1,20 @@
 
-
+#define _DEFAULT_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <ctype.h>
-#include <time.h>
+
 #include "finder.h"
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include  <dirent.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <errno.h>
 
+#include <limits.h> /* PATH_MAX */
 // char findWord(char path[], char word[])
 // {
 //   char absPath ;
@@ -26,11 +29,15 @@
 //   return absPath;
 // }
 
+// fix this
 int isDirectory(char *path)
 {
     struct stat statbuf;
-    stat(path, &statbuf);
-    return S_ISREG(statbuf.st_mode);
+    if(stat(path, &statbuf) != 0)
+    {
+        return 0;
+    }
+    return S_ISDIR(statbuf.st_mode);
 }
 
 
@@ -49,13 +56,13 @@ int isDirectory(char *path)
 //From workshop -> need to change to suit our situation
 void list_directory(char *dirname)        
 {   
-
-    
     DIR             *dirp;
     struct dirent   *dp;
 
 //  ENSURE THAT WE CAN OPEN (read-only) THE REQUIRED DIRECTORY
     dirp       = opendir(dirname);
+
+
     if(dirp == NULL) {
         perror( dirname );
         exit(EXIT_FAILURE);
@@ -63,12 +70,35 @@ void list_directory(char *dirname)
 
 //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
     while((dp = readdir(dirp)) != NULL) {  
-        printf( "%s\n", dp->d_name );
+        
+        if(isDirectory(dp->d_name) != 0)
+        {
+            char path[1000];
+            if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
+                printf( "dir: %s\n", dp->d_name);
+                realpath(dp->d_name, path);
+                printf("Path: %s\n", path);
+            //char* newPath = (char * )malloc(strlen(dirname) + strlen(dp->d_name)+1);
+            
+                list_directory(path);
+            // free(newPath);
+            }
+        }
+        else
+        {
+            printf( "file: %s\n", dp->d_name );
+        }
+       
+        
+    
+        
     }
 
 //  CLOSE THE DIRECTORY
     closedir(dirp);
 }
+
+
 
 
 void pathFinder(char path[])
