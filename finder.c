@@ -67,26 +67,30 @@ void list_directory(char *dirname)
         perror( dirname );
         exit(EXIT_FAILURE);
     }
+    char path[1000];
 
 //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
     while((dp = readdir(dirp)) != NULL) {  
         
         if(isDirectory(dp->d_name) != 0)
         {
-            char path[1000];
+            char*path = (char*)malloc(strlen(dirname) + strlen(dp->d_name)+1);
             if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
-                printf( "dir: %s\n", dp->d_name);
+                printf( "   dir: %s\n", dp->d_name);
                 realpath(dp->d_name, path);
-                printf("Path: %s\n", path);
-            //char* newPath = (char * )malloc(strlen(dirname) + strlen(dp->d_name)+1);
+                printf("    Path: %s\n", path);
+            
             
                 list_directory(path);
-            // free(newPath);
+            free(newPath);
             }
+           
         }
         else
-        {
-            printf( "file: %s\n", dp->d_name );
+        {    
+
+            realpath(dp->d_name, path);
+            printf( "file: %s\n", path);
         }
        
         
