@@ -32,14 +32,14 @@ int main(int argc, char *argv[])
     //     usage();
     //     exit(EXIT_FAILURE);
     // }
-    int res = isDirectory(argv[1]);
-    if(res == 0)
-    {
-        printf("\ninput is a directory\n");
-    }
-    else
-    {
-        printf("\nis file\n");
-    }
+    // int res = isDirectory(argv[1]);
+    // if(res == 0)
+    // {
+    //     printf("\ninput is a directory\n");
+    // }
+    // else
+    // {
+    //     printf("\nis file\n");
+    // }
     list_directory(argv[1]);
 }
