@@ -82,7 +82,7 @@ void list_directory(char *dirname)
             realpath(filesQ[position].filePath, dp->d_name);
             strcpy(filesQ[position].fileName, dp->d_name);
             printf("file: %s\n", filesQ[position].fileName);
-            
+            /// end
             ++position;
         }
         
