@@ -23,23 +23,29 @@ void usage()
     printf("\n\t-u	update the trove-file with the contents of all files in the filelist.\n");
 }
 
-
 int main(int argc, char *argv[])
 {
-    // if(argc != 3)
-    // {
-    //     printf("Invalid Argument Count:\n Usage:");
-    //     usage();
-    //     exit(EXIT_FAILURE);
-    // }
-    // int res = isDirectory(argv[1]);
-    // if(res == 0)
-    // {
-    //     printf("\ninput is a directory\n");
-    // }
-    // else
-    // {
-    //     printf("\nis file\n");
-    // }
+    //Handles './trove word'
+    if(argc == 2)
+    {
+        //open default file '/tmp/trove'
+    }
+    //Handles './trove [-f trovefile] word'
+    //Checks is not a directory
+    else if(argc == 3 && isDirectory(argv[1]) == 0)
+    {   
+        // Steps:
+        // Open provided trovefile if exists
+        //    - Read in each file -> check that the word provided exists in the file
+        //    - If word is present -> keep in trovefile -> else delete
+        //    - Maintain a count of words and unique words
+        
+        //If no trovefile exists -> exit(EXIT_FAILURE);
+    }
+    else
+    {
+
+    }
+    
     list_directory(argv[1]);
 }

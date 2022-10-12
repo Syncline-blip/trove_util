@@ -56,7 +56,7 @@ void list_directory(char *dirname)
         {
             int proccessID = fork(); // Create a new proccess
             /*
-            * If proccessID == 0 (child proccess, then show path, recurse and dig, if parent then count running childs, then wait to finish)
+            * If proccessID == 0,(child proccess) then show path, recurse and dig, if parent then count running childs, then wait to finish
             */
             if(proccessID == 0)
             {
