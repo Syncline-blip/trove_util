@@ -22,7 +22,7 @@ typedef struct {
 
 static Files filesQ[1000]; //Perhaps need malloc()
 static int forks[1024];
-int position = 0;
+
 
 
 int isDirectory(char *path)
@@ -42,7 +42,7 @@ void list_directory(char *dirname)
     struct dirent   *dp;
     dirp       = opendir(dirname);
     int size = 1024;
-
+    int position = 0;
     int forkCount = 0;
     if(dirp == NULL) {
         perror( dirname );
@@ -79,20 +79,40 @@ void list_directory(char *dirname)
         }
         else if(strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
         {
-            realpath(filesQ[position].filePath, dp->d_name);
+            realpath(dp->d_name,filesQ[position].filePath);
             strcpy(filesQ[position].fileName, dp->d_name);
-            printf("file: %s\n", filesQ[position].fileName);
+            printf("file: %s\n", filesQ[position].filePath);
             /// end
             ++position;
         }
         
     }
 
-
+   
     closedir(dirp);
-
 }
 
+// version 1 of searchString, searches the file, if found return 1
+int searchString(char* fileNmae, char* word)
+{
+    FILE* fp = fopen(fileNmae, "rb+");
+    int checkExists = 0, bufLen = 1024;
+    char line[bufLen];
+    while(fgets(line,bufLen, fp))
+    {
+        char *ptr = strstr(line, word);
+    
+            if(ptr!=NULL)
+            {
+                checkExists = 1;
+                break;
+
+            }
+    }
+
+    fclose(fp);
+    return checkExists;
+}
 
 void pathFinder(char path[])
 {
