@@ -102,10 +102,9 @@ void list_directory(char *dirname)
 int searchString(char* fileNmae, char* word)
 {
     FILE* fp = fopen(fileNmae, "rb+");
-    HASHTABLE *hashtable    = hashtable_new();
-    int bufLen = 1024;
-    char line[bufLen];
-    while(fgets(line,bufLen, fp))
+    HASHTABLE *hashtable = hashtable_new();
+    char *line = malloc(sizeof(line) * DEFAULT_SIZE);
+    while(fgets(line,DEFAULT_SIZE, fp))
     {
         hashtable_add(hashtable, line);
         if(hashtable_find(hashtable, line) == true)
@@ -115,6 +114,7 @@ int searchString(char* fileNmae, char* word)
 
         
     }
+    free(line);
     return 0;
     fclose(fp);
 
