@@ -14,14 +14,16 @@
 #include <dirent.h>
 #include <errno.h>
 #include <limits.h>
-
+#define DEFAULT_SIZE 1024
+#include "hashtable.h"
+#include <stdbool.h> 
 typedef struct {
     char fileName[100];
     char filePath[1000];
 }Files;
 
 
-static int forks[1024];
+static int forks[DEFAULT_SIZE];
 
 
 
@@ -38,7 +40,8 @@ int isDirectory(char *path)
 //Searches through all directories and sub-directories, storing all files found.
 void list_directory(char *dirname)        
 {   
-    Files *filesQ = malloc(sizeof(Files)); //Perhaps need malloc
+    Files *filesQ = malloc(sizeof(Files) * DEFAULT_SIZE); //Perhaps need malloc
+
     DIR             *dirp;
     struct dirent   *dp;
     dirp       = opendir(dirname);
@@ -84,6 +87,7 @@ void list_directory(char *dirname)
             realpath(dp->d_name,filesQ[position].filePath);
             strcpy(filesQ[position].fileName, dp->d_name);
             printf("file: %s\n", filesQ[position].filePath);
+            //searchString(filesQ[position].filePath, "hash"); test
             /// end
             ++position;
         }
@@ -98,22 +102,22 @@ void list_directory(char *dirname)
 int searchString(char* fileNmae, char* word)
 {
     FILE* fp = fopen(fileNmae, "rb+");
-    int checkExists = 0, bufLen = 1024;
+    HASHTABLE *hashtable    = hashtable_new();
+    int bufLen = 1024;
     char line[bufLen];
     while(fgets(line,bufLen, fp))
     {
-        char *ptr = strstr(line, word);
-    
-            if(ptr!=NULL)
-            {
-                checkExists = 1;
-                break;
+        hashtable_add(hashtable, line);
+        if(hashtable_find(hashtable, line) == true)
+        {
+            return 1;
+        }
 
-            }
+        
     }
-
+    return 0;
     fclose(fp);
-    return checkExists;
+
 }
 
 void pathFinder(char path[])

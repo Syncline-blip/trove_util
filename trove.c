@@ -44,9 +44,10 @@ int main(int argc, char *argv[])
     list_directory(argv[1]);
     printf("\n");
     printf("Test if word 'HASHTABLE_SIZE' exists in hashtable.c\n");
-    if(searchString("/home/lazylime001/Desktop/My General Folder/trove/trove_util/hashtable.c", "HASHTABLE_SIZE") == 1)
+    if(searchString("/home/lazylime001/Desktop/My General Folder/trove/trove_util/hashtable.c", "FEF") == 1)
     {
         printf("found!\n");
     }
+    
 
 }
