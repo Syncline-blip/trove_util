@@ -20,7 +20,7 @@ typedef struct {
     char filePath[1000];
 }Files;
 
-static Files filesQ[1000]; //Perhaps need malloc()
+
 static int forks[1024];
 
 
@@ -38,6 +38,7 @@ int isDirectory(char *path)
 //Searches through all directories and sub-directories, storing all files found.
 void list_directory(char *dirname)        
 {   
+    Files *filesQ = malloc(sizeof(Files)); //Perhaps need malloc
     DIR             *dirp;
     struct dirent   *dp;
     dirp       = opendir(dirname);
@@ -48,6 +49,7 @@ void list_directory(char *dirname)
         perror( dirname );
         exit(EXIT_FAILURE);
     }
+    
 
 
     while((dp = readdir(dirp)) != NULL) 
