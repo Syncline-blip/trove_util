@@ -14,15 +14,17 @@
 #include <dirent.h>
 #include <errno.h>
 #include <limits.h>
-
+#define DEFAULT_SIZE 1024
+#include "hashtable.h"
+#include <stdbool.h> 
 typedef struct {
     char fileName[100];
     char filePath[1000];
 }Files;
 
-static Files filesQ[1000]; //Perhaps need malloc()
-static int forks[1024];
-int position = 0;
+
+static int forks[DEFAULT_SIZE];
+
 
 
 int isDirectory(char *path)
@@ -38,16 +40,19 @@ int isDirectory(char *path)
 //Searches through all directories and sub-directories, storing all files found.
 void list_directory(char *dirname)        
 {   
+    Files *filesQ = malloc(sizeof(Files) * DEFAULT_SIZE); //Perhaps need malloc
+
     DIR             *dirp;
     struct dirent   *dp;
     dirp       = opendir(dirname);
     int size = 1024;
-
+    int position = 0;
     int forkCount = 0;
     if(dirp == NULL) {
         perror( dirname );
         exit(EXIT_FAILURE);
     }
+    
 
 
     while((dp = readdir(dirp)) != NULL) 
@@ -79,20 +84,41 @@ void list_directory(char *dirname)
         }
         else if(strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
         {
-            realpath(filesQ[position].filePath, dp->d_name);
+            realpath(dp->d_name,filesQ[position].filePath);
             strcpy(filesQ[position].fileName, dp->d_name);
-            printf("file: %s\n", filesQ[position].fileName);
+            printf("file: %s\n", filesQ[position].filePath);
+            //searchString(filesQ[position].filePath, "hash"); test
             /// end
             ++position;
         }
         
     }
 
-
+   
     closedir(dirp);
-
 }
 
+// version 1 of searchString, searches the file, if found return 1
+int searchString(char* fileNmae, char* word)
+{
+    FILE* fp = fopen(fileNmae, "rb+");
+    HASHTABLE *hashtable    = hashtable_new();
+    int bufLen = 1024;
+    char line[bufLen];
+    while(fgets(line,bufLen, fp))
+    {
+        hashtable_add(hashtable, line);
+        if(hashtable_find(hashtable, line) == true)
+        {
+            return 1;
+        }
+
+        
+    }
+    return 0;
+    fclose(fp);
+
+}
 
 void pathFinder(char path[])
 {
