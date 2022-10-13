@@ -16,13 +16,8 @@
 #include <limits.h>
 #define DEFAULT_SIZE 1024
 #include "hashtable.h"
-<<<<<<< HEAD
 #include <stdbool.h> 
 
-=======
-#include <stdbool.h>
-#include "support.h"
->>>>>>> c943859d5893dab75e0d256683486e50f9157ba3
 typedef struct {
     char fileName[100];
     char filePath[1000];
@@ -93,13 +88,8 @@ void list_directory(char *dirname)
         {
             realpath(dp->d_name,filesQ[position].filePath);
             strcpy(filesQ[position].fileName, dp->d_name);
-<<<<<<< HEAD
             //printf("file: %s\n", filesQ[position].filePath);
             //searchString(filesQ[position].filePath, "hash"); test
-=======
-            printf("file: %s\n", filesQ[position].filePath);
-        
->>>>>>> c943859d5893dab75e0d256683486e50f9157ba3
             /// end
             ++position;
         }
@@ -118,7 +108,6 @@ void writeFile(char *path)
 // version 1 of searchString, searches the file, if found return 1
 bool searchString(char* fileNmae, char* word)
 {
-<<<<<<< HEAD
     FILE* fp = fopen(fileNmae, "rb+");
     int bufLen = 1024;
     char line[bufLen];
@@ -165,25 +154,6 @@ void readTrovefile(char trovefile[], char* word)
         }
     }
     fclose(fp);
-=======
-    FILE* fp; 
-    int checkExists = false, bufLen = 1024;
-    char line[bufLen];
-    fp = fopen(fileNmae, "r");
-    
-
-    while(fgets(line,bufLen, fp))
-    {   
-    
-        if(strstr(line, word) != NULL)
-        {
-            checkExists = true;
-            break;
-        }   
-    }
-    fclose(fp);
-    return checkExists;
->>>>>>> c943859d5893dab75e0d256683486e50f9157ba3
 }
 
 void pathFinder(char path[])
