@@ -106,7 +106,7 @@ void writeFile(char *path)
 }
 
 // version 1 of searchString, searches the file, if found return 1
-bool searchString(char* fileNmae, char* word)
+int searchString(char* fileNmae, char* word)
 {
     FILE* fp = fopen(fileNmae, "rb+");
     int bufLen = 1024;
