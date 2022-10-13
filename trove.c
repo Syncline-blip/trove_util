@@ -51,13 +51,4 @@ int main(int argc, char *argv[])
     printf("\n");
     printf("Test if word 'HASHTABLE_SIZE' exists in hashtable.c\n");
 
-    if(searchString("/home/lazylime001/Desktop/My General Folder/trove/trove_util/hashtable.c", "HASHTABLE_SIZE") == true)
-    {
-        printf("found");
-    }
-    else
-    {
-        printf("failed");
-    }
-
 }

@@ -108,16 +108,16 @@ bool searchString(char* fileNmae, char* word)
     char line[bufLen];
     fp = fopen(fileNmae, "r");
     reset_words();
-     HASHTABLE *hashtable    = hashtable_new();
+
     while(fgets(line,bufLen, fp))
     {   
-       
-        hashtable_add(hashtable, line);
-        if(hashtable_find(hashtable, word) == true)
+    
+        if(strstr(line, word) != NULL)
         {
             checkExists = true;
             break;
         }
+        
     }
 
     fclose(fp);
