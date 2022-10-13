@@ -103,11 +103,10 @@ void list_directory(char *dirname)
 bool searchString(char* fileNmae, char* word)
 {
     FILE* fp; 
-    
     int checkExists = false, bufLen = 1024;
     char line[bufLen];
     fp = fopen(fileNmae, "r");
-    reset_words();
+    
 
     while(fgets(line,bufLen, fp))
     {   
@@ -116,10 +115,8 @@ bool searchString(char* fileNmae, char* word)
         {
             checkExists = true;
             break;
-        }
-        
+        }   
     }
-
     fclose(fp);
     return checkExists;
 }
@@ -128,6 +125,6 @@ void pathFinder(char path[])
 {
  // i think '-r' will require this to see if a path in the filelist is in the trove-file 
   
-  //If a matching path is found, remove it from the trove-file
+//If a matching path is found, remove it from the trove-file
   
 }
