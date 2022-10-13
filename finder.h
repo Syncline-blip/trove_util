@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifndef FINDER_H
 #define FINDER_H
 #endif
@@ -7,4 +9,4 @@
 void pathFinder(char path[]);
 int isDirectory(char *path);
 void list_directory(char *dirname);
-int searchString(char* fileNmae, char* word);
+bool searchString(char* fileNmae, char* word);
