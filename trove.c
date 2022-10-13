@@ -30,10 +30,7 @@ int main(int argc, char *argv[])
 {
     
         readTrovefile(argv[1], argv[2]);
-        
-<<<<<<< HEAD
-=======
-=======
+    
     int options, inputLength;
     
         while (optind <argc)
@@ -103,6 +100,5 @@ int main(int argc, char *argv[])
     // list_directory(argv[1]);
     // printf("\n");
     // printf("Test if word 'HASHTABLE_SIZE' exists in hashtable.c\n");
->>>>>>> 3da9942 (fixed terminal arguments)
 
 }
