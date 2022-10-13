@@ -25,35 +25,8 @@ void usage()
 
 int main(int argc, char *argv[])
 {
-    //Handles './trove word'
-    if(argc == 2)
-    {
-        //open default file '/tmp/trove'
-    }
-    //Handles './trove [-f trovefile] word'
-    //Checks is not a directory
-    else if(argc == 3 && isDirectory(argv[1]) == 0)
-    {   
-        // Steps:
-        // Open provided trovefile if exists
-        //    - Read in each file -> check that the word provided exists in the file
-        //    - If word is present -> keep in trovefile -> else delete
-        //    - Maintain a count of words and unique words
+    
+        readTrovefile(argv[1], argv[2]);
         
-        //If no trovefile exists -> exit(EXIT_FAILURE);
-    }
-    else
-    {
-
-    }
-    
-    list_directory(argv[1]);
-    printf("\n");
-    printf("Test if word 'HASHTABLE_SIZE' exists in hashtable.c\n");
-    if(searchString("/home/lazylime001/Desktop/My General Folder/trove/trove_util/hashtable.c", "FEF") == 1)
-    {
-        printf("found!\n");
-    }
-    
 
 }

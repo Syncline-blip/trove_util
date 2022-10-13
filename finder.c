@@ -17,6 +17,7 @@
 #define DEFAULT_SIZE 1024
 #include "hashtable.h"
 #include <stdbool.h> 
+
 typedef struct {
     char fileName[100];
     char filePath[1000];
@@ -36,6 +37,7 @@ int isDirectory(char *path)
     }
     return 0;
 }
+
 
 //Searches through all directories and sub-directories, storing all files found.
 void list_directory(char *dirname)        
@@ -68,8 +70,8 @@ void list_directory(char *dirname)
                 forkCount++;
                 char *path = malloc(sizeof(*realpath(dp->d_name, path)) * (size+1)); // allocate memory for the current path to look for.
                 realpath(dp->d_name, path); 
-                printf("dir to search -> '%s'\n", path);
-                printf("Searching %s...\n",dp->d_name);
+                //printf("dir to search -> '%s'\n", path);
+                //printf("Searching %s...\n",dp->d_name);
                 list_directory(path);
                 free(path); // Free after child is done with the proccess.
                 exit(0); // Exit after finish
@@ -86,7 +88,7 @@ void list_directory(char *dirname)
         {
             realpath(dp->d_name,filesQ[position].filePath);
             strcpy(filesQ[position].fileName, dp->d_name);
-            printf("file: %s\n", filesQ[position].filePath);
+            //printf("file: %s\n", filesQ[position].filePath);
             //searchString(filesQ[position].filePath, "hash"); test
             /// end
             ++position;
@@ -94,30 +96,64 @@ void list_directory(char *dirname)
         
     }
 
-   
     closedir(dirp);
+}
+
+//Called to write pathnames to a file.
+void writeFile(char *path)
+{
+
 }
 
 // version 1 of searchString, searches the file, if found return 1
 int searchString(char* fileNmae, char* word)
 {
     FILE* fp = fopen(fileNmae, "rb+");
-    HASHTABLE *hashtable    = hashtable_new();
     int bufLen = 1024;
     char line[bufLen];
-    while(fgets(line,bufLen, fp))
+
+    printf("in searchString() | %s | %d\n", fileNmae, fp != NULL);
+    while(fgets(line, bufLen, fp))
     {
-        hashtable_add(hashtable, line);
-        if(hashtable_find(hashtable, line) == true)
+        if(strstr(line, word) != NULL)
         {
-            return 1;
+            fclose(fp);
+            return 1; //Word found in file so we'll index and move on.
         }
 
-        
     }
-    return 0;
+    
     fclose(fp);
+    return 0;
+    
+    
+}
 
+
+void readTrovefile(char trovefile[], char* word)
+{
+    FILE* fp = fopen(trovefile, "rbw+");
+    int bufLen = 1024;
+    char line[bufLen];
+
+    printf("Boss im here in readTrovefile | '%s' | %d\n", trovefile, fp!=NULL);
+    while(fgets(line, bufLen, fp))
+    {
+        if(isDirectory(line) == 0) //Means it's not a directory - should be a file.
+                                   //Might also be a word so must handle that.
+        {
+            if(searchString(line, word) == 1) //Word was found in file
+            {
+                continue; //Move onto next file and don't remove from trovefile.
+            }
+            else //File no longer exists or doesn't contain the word anymore.
+            {
+                printf("Word not found -> delete line\n");
+                fputs("Okay", fp);
+            }
+        }
+    }
+    fclose(fp);
 }
 
 void pathFinder(char path[])

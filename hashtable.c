@@ -34,7 +34,6 @@ uint32_t hash_string(char *string)
 HASHTABLE *hashtable_new(void)
 {
     HASHTABLE   *new = calloc(HASHTABLE_SIZE, sizeof(LIST *));
-
     CHECK_ALLOC(new);
     return new;
 }

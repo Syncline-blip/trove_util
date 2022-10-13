@@ -8,3 +8,5 @@ void pathFinder(char path[]);
 int isDirectory(char *path);
 void list_directory(char *dirname);
 int searchString(char* fileNmae, char* word);
+void writeFile(char *path);
+void readTrovefile(char trovefile[], char* word);
