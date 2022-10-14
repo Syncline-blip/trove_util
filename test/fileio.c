@@ -1,5 +1,7 @@
+#define DEFAULT_SIZE 1024
 #define _DEFAULT_SOURCE
-#include "finder.h"
+#define _GNU_SOURCE 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,9 +16,9 @@
 #include <dirent.h>
 #include <errno.h>
 #include <limits.h>
-#define DEFAULT_SIZE 1024
-#include "hashtable.h"
 #include <stdbool.h> 
+#include <glob.h>
+
 
 typedef struct {
     char fileName[100];
@@ -26,6 +28,25 @@ typedef struct {
 
 static int forks[DEFAULT_SIZE];
 
+// Looks for the given source
+int stringDigger(char* fName, char* sWord)
+{
+    int existValue = 0; // 0 false : 1 true
+    char line[1024];
+    FILE* fp = fopen(fName, "rb+");
+    while (fgets(line,1024,fp))
+    {
+        char *ptr = strstr(line, sWord);
+        if(ptr != NULL)
+        {
+            existValue = 1;
+            printf("found!");
+            break;
+        }
+    }
+    fclose(fp);
+    return existValue;
+}
 
 
 int isDirectory(char *path)
@@ -55,8 +76,6 @@ void list_directory(char *dirname)
         exit(EXIT_FAILURE);
     }
     
-
-
     while((dp = readdir(dirp)) != NULL) 
     {
         if((isDirectory(dp->d_name) != 0) && (strcmp(dp->d_name, ".") != 0) && (strcmp(dp->d_name, "..") != 0)) 
@@ -97,69 +116,4 @@ void list_directory(char *dirname)
     }
 
     closedir(dirp);
-}
-
-//Called to write pathnames to a file.
-void writeFile(char *path)
-{
-
-}
-
-// version 1 of searchString, searches the file, if found return 1
-int searchString(char* fileNmae, char* word)
-{
-    FILE* fp = fopen(fileNmae, "rb+");
-    int bufLen = 1024;
-    char line[bufLen];
-
-    printf("in searchString() | %s | %d\n", fileNmae, fp != NULL);
-    while(fgets(line, bufLen, fp))
-    {
-        if(strstr(line, word) != NULL)
-        {
-            fclose(fp);
-            return 1; //Word found in file so we'll index and move on.
-        }
-
-    }
-    
-    fclose(fp);
-    return 0;
-    
-    
-}
-
-
-void readTrovefile(char trovefile[], char* word)
-{
-    FILE* fp = fopen(trovefile, "rbw+");
-    int bufLen = 1024;
-    char line[bufLen];
-
-    printf("Boss im here in readTrovefile | '%s' | %d\n", trovefile, fp!=NULL);
-    while(fgets(line, bufLen, fp))
-    {
-        if(isDirectory(line) == 0) //Means it's not a directory - should be a file.
-                                   //Might also be a word so must handle that.
-        {
-            if(searchString(line, word) == 1) //Word was found in file
-            {
-                continue; //Move onto next file and don't remove from trovefile.
-            }
-            else //File no longer exists or doesn't contain the word anymore.
-            {
-                printf("Word not found -> delete line\n");
-                fputs("Okay", fp);
-            }
-        }
-    }
-    fclose(fp);
-}
-
-void pathFinder(char path[])
-{
- // i think '-r' will require this to see if a path in the filelist is in the trove-file 
-  
-//If a matching path is found, remove it from the trove-file
-  
 }

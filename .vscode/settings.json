@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "__node_handle": "c",
-        "hashtable.h": "c"
+        "hashtable.h": "c",
+        "glob.h": "c"
     }
 }
