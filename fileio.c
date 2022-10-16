@@ -189,27 +189,36 @@ void list_directory(char *dirname)
 
 void readTrovefile(char trovefile[], char* word)
 {
-    
     FILE* fp = fopen(trovefile, "rbw+");
     int bufLen = 1024;
     char line[bufLen];
+    int *LinesToDelete = malloc(10 * sizeof(int)); //Will store unwanted lines
+    int index = 0; //Holds index of the next spot in LinesToDelete
+    int lineCount = 0; //Holds the line number to know waht line to index in LinesToDelete.
 
     while(fgets(line, bufLen, fp))
     {
-        //line[strcspn(line, "\r\n")] = 0; //Ensures a string doesn't end with '\n' -> otherwise path name includes \n
+        //line[strcspn(line, "\r\n")] = 0; //might need to ensure a string doesn't end with '\n' -> otherwise path name includes \n
                                          //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
         
         //printf("Inside '%s', path: '%s'\n", trovefile, line);
        
         if(stringDigger(line, word) == 1)//Word was found in file
         {
+            lineCount++;
             continue; //Move onto next path in file and don't remove from trovefile.
         }
         else//File no longer exists or doesn't contain the word anymore.
         {
-            printf("-> '%s' not found in %s\n\n\n", word, line);
-            //fputs("Okay", fp);
+            printf("-> '%s' NOT found in %s\n\n\n", word, line);
+            LinesToDelete[index] = lineCount;
+            lineCount++;
+            index++; 
+            //Once we have checked all files in the trovefile we will use the line number
+            //to remove the specific lines. Can only be done by something like in the link: 
+            // https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-8.php
         }
     }
     fclose(fp);
 }
+
