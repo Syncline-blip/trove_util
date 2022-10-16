@@ -29,12 +29,12 @@ typedef struct {
 static int forks[DEFAULT_SIZE];
 
 // Looks for the given source
-int stringDigger(char* fName, char* sWord)
+int stringDigger(char *fName, char *sWord)
 {   
     char **found;
     glob_t gstruct;
     int r;
-    int forkCount = 0;
+    //int forkCount = 0;
     r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
     if(r!= 0)
@@ -52,35 +52,35 @@ int stringDigger(char* fName, char* sWord)
     {
         exit(EXIT_FAILURE);
     }
-    printf("Found %zu filename matches\n",gstruct.gl_pathc);
+    //printf("Found %zu filename matches\n",gstruct.gl_pathc);
     while(*found)
     {
         printf("%s\n",*found);
         FILE* fp = fopen(*found, "r");
-        int proccessID = fork();
-        if(proccessID == 0)
-        {
+        //int proccessID = fork();
+        //if(proccessID == 0)
+        //{
             while (fgets(*found,DEFAULT_SIZE,fp))
             {
                 char *ptr = strstr(*found, sWord);
                 if(ptr != NULL)
                 {
                     existValue = 1;
-                    printf("found!\n");
-                    break;
+                    printf("'%s' found in %s\n", sWord, fName);
+                    existValue = 1;
                 }
             }
             free(found);
-            forkCount++;
+            //forkCount++;
             exit(0);
-        }
-        else
-        {
-            forks[forkCount] = proccessID; // May not need a malloc array for this, as we only need it to keep track of proccesses and forkcounts
-            int status = 0;
-            wait(&status); // put parent proccess to sleep, wait for child process to finish.
+        // }
+        // else
+        // {
+        //     //forks[forkCount] = proccessID; // May not need a malloc array for this, as we only need it to keep track of proccesses and forkcounts
+        //     int status = 0;
+        //     wait(&status); // put parent proccess to sleep, wait for child process to finish.
 
-        }  
+        // }  
         fclose(fp);
         found++;
     }
@@ -88,6 +88,22 @@ int stringDigger(char* fName, char* sWord)
     return existValue;
 }
 
+int fileExists(char *fName)
+{
+    glob_t gstruct;
+    int r;
+    r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
+
+    if(r!= 0)
+    {
+        if(r==GLOB_NOMATCH)
+        {
+            return 0;
+        }
+    }
+    
+    return 1;
+}
 
 int isDirectory(char *path)
 {
@@ -99,6 +115,17 @@ int isDirectory(char *path)
     return 0;
 }
 
+//Checks if arg is a file.
+int isFile(char *input)
+{
+    struct stat statbuf;
+    stat(input, &statbuf);
+    return S_ISREG(statbuf.st_mode);
+    // {
+    //     return 1;
+    // }
+    // return 0;
+}
 
 //Searches through all directories and sub-directories, storing all files found.
 void list_directory(char *dirname)        
@@ -162,25 +189,27 @@ void list_directory(char *dirname)
 
 void readTrovefile(char trovefile[], char* word)
 {
+    
     FILE* fp = fopen(trovefile, "rbw+");
     int bufLen = 1024;
     char line[bufLen];
 
-    printf("Boss im here in readTrovefile | '%s' | %d\n", trovefile, fp!=NULL);
     while(fgets(line, bufLen, fp))
     {
+        //line[strcspn(line, "\r\n")] = 0; //Ensures a string doesn't end with '\n' -> otherwise path name includes \n
+                                         //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
+        
+        //printf("Inside '%s', path: '%s'\n", trovefile, line);
        
-
-                if(stringDigger(line, word) == 1) //Word was found in file
-                {
-                    printf("found in this file");
-                    continue; //Move onto next file and don't remove from trovefile.
-                }
-                else//File no longer exists or doesn't contain the word anymore.
-                {
-                    printf("Word not found -> delete line\n");
-                    // fputs("Okay", fp);
-                }
+        if(stringDigger(line, word) == 1)//Word was found in file
+        {
+            continue; //Move onto next path in file and don't remove from trovefile.
+        }
+        else//File no longer exists or doesn't contain the word anymore.
+        {
+            printf("-> '%s' not found in %s\n\n\n", word, line);
+            //fputs("Okay", fp);
+        }
     }
     fclose(fp);
 }
