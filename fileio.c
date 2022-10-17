@@ -48,8 +48,8 @@ int stringDigger(char *fName, char *sWord)
     if(r!= 0)
     {
         if(r==GLOB_NOMATCH)
-        {
-            perror(fName);
+        {   
+           printf("not find -> %s", fName);
         }
     }
     // char line[1024];
@@ -61,8 +61,8 @@ int stringDigger(char *fName, char *sWord)
         exit(EXIT_FAILURE);
     }
     //printf("Found %zu filename matches\n",gstruct.gl_pathc);
-    while(*found)
-    {
+    // while(*found)
+    // {
         linkedlist* dirList = NULL;
         dirList = newlist();
         printf("%s\n",*found);
@@ -70,19 +70,20 @@ int stringDigger(char *fName, char *sWord)
         //int proccessID = fork();
         //if(proccessID == 0)
         //{
-            while (fgets(*found,DEFAULT_SIZE,fp))
+            while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
             {
                 char *ptr = strstr(*found, sWord);
                 if(ptr != NULL)
                 {
                     existValue = 1;
+                    printf("found");
                     insertDirectory(dirList,fName);
                     createIndexFile(dirList,fName);
                     // printf("'%s' found in %s\n", sWord, fName);
 
                 }
             }
-            free(found);
+                    fclose(fp);
             //forkCount++;
             exit(0);
         // }
@@ -93,9 +94,8 @@ int stringDigger(char *fName, char *sWord)
         //     wait(&status); // put parent proccess to sleep, wait for child process to finish.
 
         // }  
-        fclose(fp);
         found++;
-    }
+    // }
     
     return existValue;
 }
@@ -233,8 +233,9 @@ void readTrovefile(char trovefile[], char* word)
     FILE* fp = fopen(trovefile, "rbw+");
     int bufLen = 1024;
     char line[bufLen];
+    int tru = 0;
 
-    while(fgets(line, bufLen, fp))
+    while(fgets(line, bufLen, fp) != NULL)
     {
         //line[strcspn(line, "\r\n")] = 0; //Ensures a string doesn't end with '\n' -> otherwise path name includes \n
                                          //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
@@ -243,8 +244,7 @@ void readTrovefile(char trovefile[], char* word)
        
         if(stringDigger(line, word) == 1)//Word was found in file
         {
-
-            continue; //Move onto next path in file and don't remove from trovefile.
+            tru++; //Move onto next path in file and don't remove from trovefile.
         }
         else//File no longer exists or doesn't contain the word anymore.
         {
