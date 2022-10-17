@@ -18,15 +18,23 @@
 #include <limits.h>
 #include <stdbool.h> 
 #include <glob.h>
-
+#include "linkedlist.h"
+#include "fileio.h"
 
 typedef struct {
     char fileName[100];
     char filePath[DEFAULT_SIZE];
 }Files;
 
+typedef struct 
+{
+    /* data */
+    char* filePath;
+}fileStruct;
 
 static int forks[DEFAULT_SIZE];
+
+
 
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
@@ -55,6 +63,8 @@ int stringDigger(char *fName, char *sWord)
     //printf("Found %zu filename matches\n",gstruct.gl_pathc);
     while(*found)
     {
+        linkedlist* dirList = NULL;
+        dirList = newlist();
         printf("%s\n",*found);
         FILE* fp = fopen(*found, "r");
         //int proccessID = fork();
@@ -66,8 +76,10 @@ int stringDigger(char *fName, char *sWord)
                 if(ptr != NULL)
                 {
                     existValue = 1;
-                    printf("'%s' found in %s\n", sWord, fName);
-                    existValue = 1;
+                    insertDirectory(dirList,fName);
+                    createIndexFile(dirList,fName);
+                    // printf("'%s' found in %s\n", sWord, fName);
+
                 }
             }
             free(found);
@@ -115,6 +127,34 @@ int isDirectory(char *path)
     return 0;
 }
 
+void insertDirectory(linkedlist* dirList, char* absPath)
+{
+    fileStruct* file = (fileStruct*)malloc(sizeof(fileStruct));
+    file->filePath = absPath;
+    insertFirst(dirList, file);
+}
+
+void createIndexFile(linkedlist* dirlist, char* absPath)
+{
+    FILE* file = fopen("newTrove", "w");
+    listnode* node;
+    fileStruct* fileStructure;
+    if(file==NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        node = dirlist->head;
+        while(node != NULL)
+        {
+            fileStructure = (fileStruct*)node->value;
+            fprintf(file,"%s",fileStructure->filePath);
+            node = node->next;
+        }
+        fclose(file);
+    }
+}
 //Checks if arg is a file.
 int isFile(char *input)
 {
@@ -189,7 +229,7 @@ void list_directory(char *dirname)
 
 void readTrovefile(char trovefile[], char* word)
 {
-    
+
     FILE* fp = fopen(trovefile, "rbw+");
     int bufLen = 1024;
     char line[bufLen];
@@ -203,6 +243,7 @@ void readTrovefile(char trovefile[], char* word)
        
         if(stringDigger(line, word) == 1)//Word was found in file
         {
+
             continue; //Move onto next path in file and don't remove from trovefile.
         }
         else//File no longer exists or doesn't contain the word anymore.

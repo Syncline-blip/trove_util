@@ -2,6 +2,7 @@
     "files.associations": {
         "__node_handle": "c",
         "hashtable.h": "c",
-        "glob.h": "c"
+        "glob.h": "c",
+        "linkedlist.h": "c"
     }
 }
