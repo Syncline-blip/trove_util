@@ -5,7 +5,7 @@ HEADERS = $(PROJECT).h
 OBJ 	= main.o fileio.o linkedlist.o
 
 C11 = cc -std=c11
-CFLAGS = -Wall -Werror
+CFLAGS = -Wall -Werror -g
 
 $(PROJECT) : $(OBJ)
 	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ)

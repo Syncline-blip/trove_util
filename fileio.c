@@ -40,50 +40,40 @@ static int forks[DEFAULT_SIZE];
 int stringDigger(char *fName, char *sWord)
 {   
     char **found;
-    glob_t gstruct;
-    int r;
-    //int forkCount = 0;
-    r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
+    // glob_t gstruct;
+    // // int r;
+    // //int forkCount = 0;
+    // r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
-    if(r!= 0)
-    {
-        if(r==GLOB_NOMATCH)
-        {   
-           printf("not find -> %s", fName);
-        }
-    }
     // char line[1024];
     int existValue = 0; // 0 false : 1 true
     // char line[1024];
-    found = gstruct.gl_pathv;
-    if(gstruct.gl_pathc == 0)
-    {
-        exit(EXIT_FAILURE);
-    }
+    // found = gstruct.gl_pathv;
+
     //printf("Found %zu filename matches\n",gstruct.gl_pathc);
     // while(*found)
     // {
         linkedlist* dirList = NULL;
         dirList = newlist();
-        printf("%s\n",*found);
-        FILE* fp = fopen(*found, "r");
+        printf("%s\n",fName);
+        FILE* fp = fopen(fName, "r");
         //int proccessID = fork();
         //if(proccessID == 0)
         //{
-            while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
+            while (fgets(fName,DEFAULT_SIZE,fp) != NULL )
             {
-                char *ptr = strstr(*found, sWord);
+                char *ptr = strstr(fName, sWord);
                 if(ptr != NULL)
                 {
                     existValue = 1;
-                    printf("found");
                     insertDirectory(dirList,fName);
                     createIndexFile(dirList,fName);
-                    // printf("'%s' found in %s\n", sWord, fName);
+                    printf("'%s' found in %s\n", sWord, fName);
+                    continue;
 
                 }
             }
-                    fclose(fp);
+
             //forkCount++;
             exit(0);
         // }
@@ -94,8 +84,9 @@ int stringDigger(char *fName, char *sWord)
         //     wait(&status); // put parent proccess to sleep, wait for child process to finish.
 
         // }  
+        fclose(fp);
         found++;
-    // }
+    
     
     return existValue;
 }
@@ -233,18 +224,18 @@ void readTrovefile(char trovefile[], char* word)
     FILE* fp = fopen(trovefile, "rbw+");
     int bufLen = 1024;
     char line[bufLen];
-    int tru = 0;
 
     while(fgets(line, bufLen, fp) != NULL)
     {
         //line[strcspn(line, "\r\n")] = 0; //Ensures a string doesn't end with '\n' -> otherwise path name includes \n
                                          //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
-        
+    
         //printf("Inside '%s', path: '%s'\n", trovefile, line);
        
         if(stringDigger(line, word) == 1)//Word was found in file
         {
-            tru++; //Move onto next path in file and don't remove from trovefile.
+
+            continue; //Move onto next path in file and don't remove from trovefile.
         }
         else//File no longer exists or doesn't contain the word anymore.
         {
