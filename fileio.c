@@ -33,8 +33,12 @@ typedef struct
 }fileStruct;
 
 static int forks[DEFAULT_SIZE];
-
-
+static linkedlist* dirList = NULL;
+dirList = newlist;
+void freePath(void *var)
+{
+    free((char*)var);
+}
 
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
@@ -42,8 +46,8 @@ int stringDigger(char *fName, char *sWord)
     char **found;
     glob_t gstruct;
     int r;
-    linkedlist* dirList = NULL;
-    dirList = newlist();
+    
+    // void (*freeNode)(void*) = &freePath;
     //int forkCount = 0;
     r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
@@ -73,12 +77,14 @@ int stringDigger(char *fName, char *sWord)
         //{
             while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
             {
+
                 char *ptr = strstr(*found, sWord);
                 if(ptr != NULL)
                 {
                     existValue = 1;
                     insertDirectory(dirList,fName);
                     createIndexFile(dirList,fName);
+                    dirList = resizeList(dirList);
                     printf("found\n");
 
                     //printf("'%s' found in %s\n", sWord, fName);
@@ -95,9 +101,10 @@ int stringDigger(char *fName, char *sWord)
 
         // }  
         found++;
+        
 
     // }
-    
+
     return existValue;
 }
 

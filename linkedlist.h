@@ -16,10 +16,10 @@ typedef struct
 
 
 typedef char* linkedlistString(void*);
-typedef void*freeSLL(void*);
+typedef void(*freeSLL)(void*);
 linkedlist*newlist();
 void insertFirst(linkedlist*myList, void*value);
 void manualFree(linkedlist*, freeSLL*);
-
+linkedlist*resizeList(linkedlist*myList);
 
 #endif
