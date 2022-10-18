@@ -60,46 +60,26 @@ int stringDigger(char *fName, char *sWord)
     {
         exit(EXIT_FAILURE);
     }
-    //printf("Found %zu filename matches\n",gstruct.gl_pathc);
-    // while(*found)
-    // {
-        linkedlist* dirList = NULL;
-        dirList = newlist();
-        printf("%s\n",strrchr(*found, '/'));
-        FILE* fp = fopen(*found, "r");
-        //int proccessID = fork();
-        //if(proccessID == 0)
-        //{
-            while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
-            {
 
-                char *ptr = strstr(*found, sWord);
-                if(ptr != NULL)
-                {
-                    existValue = 1;
-                    //printf("found %s\n", ptr);
-                    insertDirectory(dirList,fName);
-                    createIndexFile(dirList,fName);
-                    fclose(fp);
-                    break; //We can remove this if we want it to keep searching the file for numerous word occurances.
-                    //printf("'%s' found in %s\n", sWord, fName);
+    linkedlist* dirList = NULL;
+    dirList = newlist();        
+    printf("%s\n",strrchr(*found, '/'));
+    FILE* fp = fopen(*found, "r");
+    while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
+    {
+        char *ptr = strstr(*found, sWord);
+        if(ptr != NULL)
+        {
+            existValue = 1;
+            insertDirectory(dirList,fName);
+            createIndexFile(dirList,fName);
+            fclose(fp);
+            break; //We can remove this if we want it to keep searching the file for numerous word occurances.
 
-                }
-            }
-                    fclose(fp);
-            //forkCount++;
-            //exit(0);
-        // }
-        // else
-        // {
-        //     //forks[forkCount] = proccessID; // May not need a malloc array for this, as we only need it to keep track of proccesses and forkcounts
-        //     int status = 0;
-        //     wait(&status); // put parent proccess to sleep, wait for child process to finish.
-
-        // }  
-        found++;
-    // }
-    
+        }
+    }
+    fclose(fp);
+    found++;
     return existValue;
 }
 
@@ -164,10 +144,6 @@ int isFile(char *input)
     struct stat statbuf;
     stat(input, &statbuf);
     return S_ISREG(statbuf.st_mode);
-    // {
-    //     return 1;
-    // }
-    // return 0;
 }
 
 //Searches through all directories and sub-directories, storing all files found.
@@ -242,8 +218,6 @@ void readTrovefile(char trovefile[], char* word)
     {
         line[strcspn(line, "\r\n")] = 0; //might need to ensure a string doesn't end with '\n' -> otherwise path name includes \n
                                          //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
-        
-        //printf("Inside '%s', path: '%s'\n", trovefile, line);
        
         if(stringDigger(line, word) == 1)//Word was found in file
         {
