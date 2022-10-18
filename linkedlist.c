@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "linkedlist.h"
-
+int resize;
 
 linkedlist*newlist()
 {
@@ -31,6 +31,7 @@ void insertFirst(linkedlist*myList, void*value)
     }
     else
     {
+        myList = (linkedlist*)realloc(myList,sizeof(myList)*2);
         newNode->next = myList->head;
         myList->head = newNode;
     }
