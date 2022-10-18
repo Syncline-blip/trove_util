@@ -44,7 +44,6 @@ int stringDigger(char *fName, char *sWord)
     int r;
     linkedlist* dirList = NULL;
     dirList = newlist();
-    //int forkCount = 0;
     r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
     if(r!= 0)
@@ -54,9 +53,7 @@ int stringDigger(char *fName, char *sWord)
            printf("not find -> '%s'\n", fName);
         }
     }
-    // char line[1024];
     int existValue = 0; // 0 false : 1 true
-    // char line[1024];
     found = gstruct.gl_pathv;
     if(gstruct.gl_pathc == 0)
     {
@@ -186,7 +183,7 @@ void list_directory(char *dirname)
                 free(path); // Free after child is done with the proccess.
                 forks[forkCount] = proccessID; // May not need a malloc array for this, as we only need it to keep track of proccesses and forkcounts
                 int status = 0;
-                wait(&status); // put parent proccess to sleep, wait for child process to finish.
+                wait(&status); //put parent proccess to sleep, wait for child process to finish.
 
             }  
         }
@@ -194,9 +191,6 @@ void list_directory(char *dirname)
         {
             realpath(dp->d_name,filesQ[position].filePath);
             strcpy(filesQ[position].fileName, dp->d_name);
-            //printf("file: %s\n", filesQ[position].filePath);
-            //searchString(filesQ[position].filePath, "hash"); test
-            /// end
             ++position;
         }
         
