@@ -27,8 +27,7 @@ int main(int argc, char *argv[])
 {
     int options, inputLength = 4;
     bool fFlag = false, bFlag = false, uFlag = false, rFlag = false, lFlag = false;
-    char *fileName = "/tmp/trove"; //Default name if -f option not provided.
-
+    char* fileName;
     //DOESN'T WORK WHERE OPTIONS ARE NOT NEXT TO EACH OTHER IT JUST ABORTS AT SOMETHING UNRECOGNISED
     while((options = getopt(argc,argv, OPTLIST))  != -1)
     {
@@ -75,7 +74,7 @@ int main(int argc, char *argv[])
         if(isFile(argv[3]) == 0 && isDirectory(argv[3]) == 0)
         {
             printf("./trove -f %s %s\n", argv[3], argv[2]);
-            readTrovefile(argv[2], argv[3]);
+            readTrovefile(fileName, argv[3]);
         }
         //else if format == ./trove -f trovefile word
         else if(isFile(argv[1]) == 0 && isDirectory(argv[1]) == 0)
