@@ -65,7 +65,7 @@ int stringDigger(char *fName, char *sWord)
     // {
         linkedlist* dirList = NULL;
         dirList = newlist();
-        printf("%s \n",strrchr(*found, '/'));
+        printf("%s\n",strrchr(*found, '/'));
         FILE* fp = fopen(*found, "r");
         //int proccessID = fork();
         //if(proccessID == 0)
@@ -80,6 +80,7 @@ int stringDigger(char *fName, char *sWord)
                     //printf("found %s\n", ptr);
                     insertDirectory(dirList,fName);
                     createIndexFile(dirList,fName);
+                    fclose(fp);
                     break; //We can remove this if we want it to keep searching the file for numerous word occurances.
                     //printf("'%s' found in %s\n", sWord, fName);
 
@@ -246,11 +247,12 @@ void readTrovefile(char trovefile[], char* word)
        
         if(stringDigger(line, word) == 1)//Word was found in file
         {
+            printf("-> '%s' found in %s\n\n", word, strrchr(line, '/'));
             tru++; //Move onto next path in file and don't remove from trovefile.
         }
         else//File no longer exists or doesn't contain the word anymore.
         {
-            //printf("-> '%s' NOT found in %s\n\n\n", word, line);
+            printf("-> '%s' NOT found in %s\n\n", word, strrchr(line, '/'));
             //Once we have checked all files in the trovefile we will use the line number
             //to remove the specific lines. Can only be done by something like in the link: 
             // https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-8.php
