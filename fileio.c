@@ -33,7 +33,7 @@ typedef struct
 }fileStruct;
 
 static int forks[DEFAULT_SIZE];
-linkedlist* dirList = NULL;
+linkedlist* dirList;
 
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
@@ -108,22 +108,21 @@ void insertDirectory(linkedlist* dirList, char* absPath)
 {
     fileStruct* file = (fileStruct*)malloc(sizeof(fileStruct));
     file->filePath = absPath;
-    printf("absPath: %s\n",absPath);
+    printf("absPath: %s\n",file->filePath);
     insertFirst(dirList, file);
 }
 
 void createIndexFile(linkedlist* dirlist)
 {
     FILE* file = fopen("newTrove", "a");
-    listnode* node;
-    fileStruct* fileStructure;
     if(file == NULL)
     {
         exit(EXIT_FAILURE);
     }
     else
     {
-        node = dirlist->head;
+        listnode* node = dirlist->head;
+        fileStruct* fileStructure;
         while(node != NULL)
         {
             fileStructure = (fileStruct*)node->value;
@@ -148,11 +147,10 @@ int isFile(char *input)
 //Searches through all directories and sub-directories, storing all files found.
 void list_directory(char *dirname)        
 {   
-    Files *filesQ = malloc(sizeof(Files) * DEFAULT_SIZE); //Perhaps need malloc
-
-    DIR             *dirp;
-    struct dirent   *dp;
-    dirp       = opendir(dirname);
+    Files *filesQ = malloc(sizeof(Files) * DEFAULT_SIZE);
+    DIR *dirp;
+    struct dirent *dp;
+    dirp = opendir(dirname);
     int position = 0;
     int forkCount = 0;
     if(dirp == NULL) {

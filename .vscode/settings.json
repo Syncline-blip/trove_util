@@ -3,6 +3,7 @@
         "__node_handle": "c",
         "hashtable.h": "c",
         "glob.h": "c",
-        "linkedlist.h": "c"
+        "linkedlist.h": "c",
+        "algorithm": "c"
     }
 }

@@ -20,7 +20,6 @@ void insertFirst(linkedlist*myList, void*value)
 {
     listnode*newNode = (listnode*)malloc(sizeof(listnode));
     newNode->value = value;
-    newNode->next = NULL;
 
     // Check if list is empty!
     if(myList->head == NULL)
@@ -29,7 +28,7 @@ void insertFirst(linkedlist*myList, void*value)
     }
     else
     {
-        myList = (linkedlist*)realloc(myList,sizeof(myList)*2);
+        //myList = (linkedlist*)realloc(myList,sizeof(myList)*2);
         newNode->next = myList->head;
         myList->head = newNode;
     }
