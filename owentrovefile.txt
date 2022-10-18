@@ -1,5 +1,2 @@
-<<<<<<< HEAD
-// Compile this program with:
-=======
 /Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/trove-sample-data/textfiles/classroom.txt
->>>>>>> 667f3a0a95477115de9e54d5b92b999af8a3b072
+/Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/trove-sample-data/textfiles/debugging

@@ -101,8 +101,6 @@ int main(int argc, char *argv[])
         else{ fileNotFound(argv[1]); }
     }
     
-    else {}
-    
 
     return 0;
 }

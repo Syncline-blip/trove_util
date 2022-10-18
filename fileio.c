@@ -45,6 +45,13 @@ int stringDigger(char *fName, char *sWord)
     // //int forkCount = 0;
     // r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
+    if(r!= 0)
+    {
+        if(r==GLOB_NOMATCH)
+        {   
+           printf("not find -> '%s'\n", fName);
+        }
+    }
     // char line[1024];
     int existValue = 0; // 0 false : 1 true
     // char line[1024];
@@ -66,10 +73,10 @@ int stringDigger(char *fName, char *sWord)
                 if(ptr != NULL)
                 {
                     existValue = 1;
+                    printf("found\n");
                     insertDirectory(dirList,fName);
                     createIndexFile(dirList,fName);
-                    printf("'%s' found in %s\n", sWord, fName);
-                    continue;
+                    //printf("'%s' found in %s\n", sWord, fName);
 
                 }
             }
@@ -225,11 +232,11 @@ void readTrovefile(char trovefile[], char* word)
     int bufLen = 1024;
     char line[bufLen];
 
-    while(fgets(line, bufLen, fp) != NULL)
+    while(fgets(line, bufLen, fp))
     {
-        //line[strcspn(line, "\r\n")] = 0; //Ensures a string doesn't end with '\n' -> otherwise path name includes \n
+        line[strcspn(line, "\r\n")] = 0; //might need to ensure a string doesn't end with '\n' -> otherwise path name includes \n
                                          //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
-    
+        printf("'%s' <-\n",line);
         //printf("Inside '%s', path: '%s'\n", trovefile, line);
        
         if(stringDigger(line, word) == 1)//Word was found in file
@@ -239,9 +246,12 @@ void readTrovefile(char trovefile[], char* word)
         }
         else//File no longer exists or doesn't contain the word anymore.
         {
-            printf("-> '%s' not found in %s\n\n\n", word, line);
-            //fputs("Okay", fp);
+            printf("-> '%s' NOT found in %s\n\n\n", word, line);
+            //Once we have checked all files in the trovefile we will use the line number
+            //to remove the specific lines. Can only be done by something like in the link: 
+            // https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-8.php
         }
     }
     fclose(fp);
 }
+
