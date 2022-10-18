@@ -42,7 +42,8 @@ int stringDigger(char *fName, char *sWord)
     char **found;
     glob_t gstruct;
     int r;
-           
+    linkedlist* dirList = NULL;
+    dirList = newlist();
     //int forkCount = 0;
     r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
@@ -72,8 +73,6 @@ int stringDigger(char *fName, char *sWord)
         //{
             while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
             {
-                linkedlist* dirList = NULL;
-                dirList = newlist();
                 char *ptr = strstr(*found, sWord);
                 if(ptr != NULL)
                 {
@@ -152,7 +151,7 @@ void createIndexFile(linkedlist* dirlist, char* absPath)
         while(node != NULL)
         {
             fileStructure = (fileStruct*)node->value;
-            fprintf(file,"%s",fileStructure->filePath);
+            fprintf(file,"%s\n",fileStructure->filePath);
             node = node->next;
         }
         fclose(file);
@@ -245,10 +244,10 @@ void readTrovefile(char trovefile[], char* word)
                                          //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
         printf("'%s' <-\n",line);
         //printf("Inside '%s', path: '%s'\n", trovefile, line);
-        int dugString = 0;
-        if(stringDigger(line, word) == 1)//Word was found in file
+
+        if(stringDigger(line, word) == 1 && fileExists(line))//Word was found in file
         {
-            dugString++;
+            continue;
             //Move onto next path in file and don't remove from trovefile.
         }
         else//File no longer exists or doesn't contain the word anymore.
