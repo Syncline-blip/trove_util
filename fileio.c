@@ -65,7 +65,7 @@ int stringDigger(char *fName, char *sWord)
     //printf("Found %zu filename matches\n",gstruct.gl_pathc);
     // while(*found)
     // {
-
+//
         printf("%s\n",*found);
         FILE* fp = fopen(*found, "r");
         //int proccessID = fork();
