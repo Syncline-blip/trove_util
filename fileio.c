@@ -33,8 +33,7 @@ typedef struct
 }fileStruct;
 
 static int forks[DEFAULT_SIZE];
-
-
+linkedlist* dirList = NULL;
 
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
@@ -42,8 +41,6 @@ int stringDigger(char *fName, char *sWord)
     char **found;
     glob_t gstruct;
     int r;
-    linkedlist* dirList = NULL;
-    dirList = newlist();
     r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
     if(r!= 0)
@@ -59,8 +56,9 @@ int stringDigger(char *fName, char *sWord)
     {
         exit(EXIT_FAILURE);
     }
-      
+    
     printf("%s\n",strrchr(*found, '/'));
+
     FILE* fp = fopen(*found, "r");
     while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
     {
@@ -69,7 +67,6 @@ int stringDigger(char *fName, char *sWord)
         {
             existValue = 1;
             insertDirectory(dirList,fName);
-            createIndexFile(dirList,fName);
             fclose(fp);
             break; //We can remove this if we want it to keep searching the file for numerous word occurances.
 
@@ -114,25 +111,30 @@ void insertDirectory(linkedlist* dirList, char* absPath)
     insertFirst(dirList, file);
 }
 
-void createIndexFile(linkedlist* dirlist, char* absPath)
+void createIndexFile(linkedlist* dirlist)
 {
     FILE* file = fopen("newTrove", "a");
     listnode* node;
     fileStruct* fileStructure;
-    if(file==NULL)
+    if(file == NULL)
     {
         exit(EXIT_FAILURE);
     }
     else
     {
+        printf("I'm here 1\n\n");
         node = dirlist->head;
         while(node != NULL)
         {
             fileStructure = (fileStruct*)node->value;
             fprintf(file,"%s\n",fileStructure->filePath);
+            printf("I'm here %p\n\n", node);
+
             node = node->next;
+            printf("yea nah\n");
         }
         fclose(file);
+        free(dirlist);
     }
 }
 //Checks if arg is a file.
@@ -202,11 +204,10 @@ void list_directory(char *dirname)
 
 void readTrovefile(char trovefile[], char* word)
 {
-
     FILE* fp = fopen(trovefile, "rbw+");
     int bufLen = 1024;
     char line[bufLen];
-
+    dirList = newlist();
     
     while(fgets(line, bufLen, fp) != NULL)
     {
@@ -224,4 +225,7 @@ void readTrovefile(char trovefile[], char* word)
     }
 
     fclose(fp);
+    printf("Yea all goods bruh\n\n");
+
+    createIndexFile(dirList);
 }

@@ -8,6 +8,6 @@ int isDirectory(char *path);
 void readTrovefile(char trovefile[], char* word);
 int isFile(char *input);
 int fileExists(char *fName);
-void createIndexFile(linkedlist* dirList, char* absPath);
+void createIndexFile(linkedlist* dirList);
 void insertDirectory(linkedlist* dirList, char* absPath);
 #endif
