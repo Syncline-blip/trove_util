@@ -139,7 +139,7 @@ void insertDirectory(linkedlist* dirList, char* absPath)
 
 void createIndexFile(linkedlist* dirlist, char* absPath)
 {
-    FILE* file = fopen("newTrove", "w");
+    FILE* file = fopen("newTrove", "a");
     listnode* node;
     fileStruct* fileStructure;
     if(file==NULL)
