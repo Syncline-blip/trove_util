@@ -62,9 +62,7 @@ int stringDigger(char *fName, char *sWord)
     {
         exit(EXIT_FAILURE);
     }
-
-    linkedlist* dirList = NULL;
-    dirList = newlist();        
+      
     printf("%s\n",strrchr(*found, '/'));
     FILE* fp = fopen(*found, "r");
     while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
@@ -117,7 +115,6 @@ void insertDirectory(linkedlist* dirList, char* absPath)
     fileStruct* file = (fileStruct*)malloc(sizeof(fileStruct));
     file->filePath = absPath;
     insertFirst(dirList, file);
-    printf("called!");
 }
 
 void createIndexFile(linkedlist* dirlist, char* absPath)
@@ -140,7 +137,6 @@ void createIndexFile(linkedlist* dirlist, char* absPath)
         }
         fclose(file);
     }
-    printf("called this");
 }
 //Checks if arg is a file.
 int isFile(char *input)
@@ -220,22 +216,16 @@ void readTrovefile(char trovefile[], char* word)
     
     while(fgets(line, bufLen, fp) != NULL)
     {
-        line[strcspn(line, "\r\n")] = 0; //might need to ensure a string doesn't end with '\n' -> otherwise path name includes \n
-                                         //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
-        printf("'%s' <-\n",line);
-        //printf("Inside '%s', path: '%s'\n", trovefile, line);
-
+        line[strcspn(line, "\r\n")] = 0; //Removes any trailing '\n'
         if(stringDigger(line, word) == 1 && fileExists(line))//Word was found in file
         {
+            printf("- Found '%s' in %s\n\n",word,strrchr(line,'/'));
             continue;
             //Move onto next path in file and don't remove from trovefile.
         }
         else//File no longer exists or doesn't contain the word anymore.
         {
-            printf("-> '%s' NOT found in %s\n\n\n", word, line);
-            //Once we have checked all files in the trovefile we will use the line number
-            //to remove the specific lines. Can only be done by something like in the link: 
-            // https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-8.php
+            printf("- '%s' NOT Found in %s\n\n",word,strrchr(line,'/'));
         }
     }
 
