@@ -42,8 +42,7 @@ int stringDigger(char *fName, char *sWord)
     char **found;
     glob_t gstruct;
     int r;
-            linkedlist* dirList = NULL;
-        dirList = newlist();
+           
     //int forkCount = 0;
     r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
 
@@ -73,6 +72,8 @@ int stringDigger(char *fName, char *sWord)
         //{
             while (fgets(*found,DEFAULT_SIZE,fp) != NULL)
             {
+                linkedlist* dirList = NULL;
+                dirList = newlist();
                 char *ptr = strstr(*found, sWord);
                 if(ptr != NULL)
                 {
@@ -151,7 +152,7 @@ void createIndexFile(linkedlist* dirlist, char* absPath)
         while(node != NULL)
         {
             fileStructure = (fileStruct*)node->value;
-            fprintf(file,"%s\n",fileStructure->filePath);
+            fprintf(file,"%s",fileStructure->filePath);
             node = node->next;
         }
         fclose(file);
