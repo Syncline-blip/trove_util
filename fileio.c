@@ -49,7 +49,7 @@ int stringDigger(char *fName, char *sWord)
     {
         if(r==GLOB_NOMATCH)
         {   
-           printf("not find -> %s", fName);
+           printf("not find -> '%s'\n", fName);
         }
     }
     // char line[1024];
@@ -76,10 +76,10 @@ int stringDigger(char *fName, char *sWord)
                 if(ptr != NULL)
                 {
                     existValue = 1;
-                    printf("found");
+                    printf("found\n");
                     insertDirectory(dirList,fName);
                     createIndexFile(dirList,fName);
-                    // printf("'%s' found in %s\n", sWord, fName);
+                    //printf("'%s' found in %s\n", sWord, fName);
 
                 }
             }
@@ -235,11 +235,11 @@ void readTrovefile(char trovefile[], char* word)
     char line[bufLen];
     int tru = 0;
 
-    while(fgets(line, bufLen, fp) != NULL)
+    while(fgets(line, bufLen, fp))
     {
-        //line[strcspn(line, "\r\n")] = 0; //might need to ensure a string doesn't end with '\n' -> otherwise path name includes \n
+        line[strcspn(line, "\r\n")] = 0; //might need to ensure a string doesn't end with '\n' -> otherwise path name includes \n
                                          //https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
-        
+        printf("'%s' <-\n",line);
         //printf("Inside '%s', path: '%s'\n", trovefile, line);
        
         if(stringDigger(line, word) == 1)//Word was found in file
@@ -249,9 +249,6 @@ void readTrovefile(char trovefile[], char* word)
         else//File no longer exists or doesn't contain the word anymore.
         {
             printf("-> '%s' NOT found in %s\n\n\n", word, line);
-            LinesToDelete[index] = lineCount;
-            lineCount++;
-            index++; 
             //Once we have checked all files in the trovefile we will use the line number
             //to remove the specific lines. Can only be done by something like in the link: 
             // https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-8.php
