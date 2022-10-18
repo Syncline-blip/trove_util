@@ -10,6 +10,11 @@ linkedlist*newlist()
     return myList;
 }
 
+linkedlist*resizeList(linkedlist*myList)
+{
+    linkedlist* resized = (linkedlist*)realloc(myList,sizeof(linkedlist)*1024);
+    return resized;
+}
 
 void insertFirst(linkedlist*myList, void*value)
 {
