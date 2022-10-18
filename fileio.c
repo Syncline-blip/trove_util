@@ -47,7 +47,7 @@ int stringDigger(char *fName, char *sWord)
     {
         if(r==GLOB_NOMATCH)
         {   
-           printf("not find -> '%s'\n", fName);
+           printf("Could not find '%s'\n", fName);
         }
     }
     int existValue = 0; // 0 false : 1 true
@@ -108,6 +108,7 @@ void insertDirectory(linkedlist* dirList, char* absPath)
 {
     fileStruct* file = (fileStruct*)malloc(sizeof(fileStruct));
     file->filePath = absPath;
+    printf("absPath: %s\n",absPath);
     insertFirst(dirList, file);
 }
 
@@ -122,21 +123,20 @@ void createIndexFile(linkedlist* dirlist)
     }
     else
     {
-        printf("I'm here 1\n\n");
         node = dirlist->head;
         while(node != NULL)
         {
             fileStructure = (fileStruct*)node->value;
             fprintf(file,"%s\n",fileStructure->filePath);
-            printf("I'm here %p\n\n", node);
-
+            printf("%s\n",fileStructure->filePath);
             node = node->next;
-            printf("yea nah\n");
         }
         fclose(file);
+        printf("Index file has been written.\n");
         free(dirlist);
     }
 }
+
 //Checks if arg is a file.
 int isFile(char *input)
 {
@@ -201,7 +201,6 @@ void list_directory(char *dirname)
     closedir(dirp);
 }
 
-
 void readTrovefile(char trovefile[], char* word)
 {
     FILE* fp = fopen(trovefile, "rbw+");
@@ -225,7 +224,7 @@ void readTrovefile(char trovefile[], char* word)
     }
 
     fclose(fp);
-    printf("Yea all goods bruh\n\n");
-
     createIndexFile(dirList);
+    printf("Program finished executing.\n");
+    exit(EXIT_SUCCESS);
 }

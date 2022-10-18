@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "linkedlist.h"
-int resize;
 
 linkedlist*newlist()
 {
@@ -15,7 +14,6 @@ linkedlist*newlist()
 void insertFirst(linkedlist*myList, void*value)
 {
     listnode*newNode = (listnode*)malloc(sizeof(listnode));
-    
     newNode->value = value;
     newNode->next = NULL;
 
