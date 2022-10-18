@@ -1,5 +1,6 @@
 http://sports.yahoo.com/blogs/mlb-big-league-stew/jean-segura-steals-second-then-steals-first-bizarre-103642855--mlb.html
 
+Compile
 In baseball the object is to iterate as many tokens as you can through a 4
 slotted dequeue FIFO (implemented internally as a self referencing doubly
 linked list); Iteration run time is earned by the batting team by causing
