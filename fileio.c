@@ -154,7 +154,7 @@ void createIndexFile(linkedlist* dirlist)
         {
             fileStructure = (fileStruct*)node->value;
             fprintf(file,"%s\n",fileStructure->filePath);
-            printf("%s\n",fileStructure->filePath);
+            printf("path assigned: %s\n",fileStructure->filePath);
             node = node->next;
         }
         fclose(file);
