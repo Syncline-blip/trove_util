@@ -18,7 +18,7 @@ typedef struct
 typedef char* linkedlistString(void*);
 typedef void(*freeSLL)(void*);
 linkedlist*newlist();
-void insertFirst(linkedlist*myList, void*value);
+void insertFirst(linkedlist*myList, char*value);
 void manualFree(linkedlist*, freeSLL*);
 linkedlist*resizeList(linkedlist*myList);
 

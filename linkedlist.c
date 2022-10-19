@@ -16,23 +16,24 @@ linkedlist*resizeList(linkedlist*myList)
     return resized;
 }
 
-void insertFirst(linkedlist*myList, void*value)
+void insertFirst(linkedlist*myList, char*value)
 {
     listnode*newNode = (listnode*)malloc(sizeof(listnode));
-
+    newNode->value = value;
+    newNode->next = NULL;
+    printf("val recieved: %s\n",value);
     // Check if list is empty!
     if(myList->head == NULL)
     {
-        newNode->value = value;
         myList->head = newNode;
     }
     else
     {
-        newNode->value = value;
         newNode->next = myList->head;
         myList->head = newNode;
     }
     myList->count++;
+
 }
 
 void manualFree(linkedlist* list, freeSLL* freeVal)

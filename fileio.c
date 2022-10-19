@@ -26,11 +26,11 @@ typedef struct {
     char filePath[DEFAULT_SIZE];
 }Files;
 
-typedef struct 
-{
-    /* data */
-    char* filePath;
-}fileStruct;
+// typedef struct 
+// {
+//     /* data */
+//     char* filePath;
+// }fileStruct;
 
 static int forks[DEFAULT_SIZE];
 linkedlist* dirList;
@@ -133,9 +133,9 @@ int isFile(char *input)
 
 void insertDirectory(linkedlist* dirList, char* absPath)
 {
-    fileStruct* file = (fileStruct*)malloc(sizeof(fileStruct));
-    file->filePath = absPath;
-    printf("absPath: %s\n",file->filePath);
+    char* file = (char*)malloc(sizeof(char));
+    file = absPath;
+    printf("absPath: %s\n",absPath);
     insertFirst(dirList, file);
 }
 
@@ -149,13 +149,13 @@ void createIndexFile(linkedlist* dirlist)
     else
     {
         listnode* node = dirlist->head;
-        fileStruct* fileStructure;
         while(node != NULL)
         {
-            fileStructure = (fileStruct*)node->value;
-            fprintf(file,"%s\n",fileStructure->filePath);
-            printf("path assigned: %s\n",fileStructure->filePath);
+            char* path = (char*)node->value;
+            printf("node-> %s \n",path);
+            fprintf(file,"%s\n",path);
             node = node->next;
+            
         }
         fclose(file);
         printf("Index file has been written.\n");
