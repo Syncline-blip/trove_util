@@ -14,4 +14,7 @@ int isFile(char *input);
 int fileExists(char *fName);
 void createIndexFile(linkedlist* dirList);
 void insertDirectory(linkedlist* dirList, char* absPath);
+void buildNewTrovefile(char* fileName,int inputLength);
+void getWords(int wordLength);
+void printWords();
 #endif

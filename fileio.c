@@ -1,7 +1,7 @@
 #define DEFAULT_SIZE 1024
 #define _DEFAULT_SOURCE
 #define _GNU_SOURCE 
-
+#define DELIMS  "-`~!@#$%^&*();[]\{}}|<>?"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,7 +35,9 @@ typedef struct {
 static int forks[DEFAULT_SIZE];
 linkedlist* dirList;
 char *all_files[1024];
+linkedlist* wordList;
 int location = 0;
+int wordCount = 0;
 
 void add_files(char *pathname)
 {
@@ -137,6 +139,62 @@ void insertDirectory(linkedlist* dirList, char* absPath)
     file = absPath;
     printf("absPath: %s\n",absPath);
     insertFirst(dirList, file);
+}
+
+void printWords()
+{
+    printf("Inside printWords()\n");
+    listnode* node = wordList->head;
+    while(node != NULL)
+    {
+        char* path = (char*)node->value;
+        printf("node-> %s \n",path);
+        node = node->next;
+    }
+    printf("finished printing words\n");
+}
+
+void getWords(int wordLength)
+{
+    printf("Inside getWords()\n");
+    char* pch;
+    wordList = newlist();
+    FILE* file = fopen("newTrove", "a");
+    char line[DEFAULT_SIZE];
+    while(fgets(line, DEFAULT_SIZE, file) != NULL)
+    {
+        pch = strtok(line, DELIMS);
+        while(pch != NULL)
+        {
+            if(strlen(pch) == wordLength){
+                insertFirst(wordList, pch);
+                wordCount++;
+            }
+            pch = strtok(line, DELIMS);
+        }
+        
+    }
+    printWords();
+}
+
+void buildNewTrovefile(char* fileName,int inputLength)
+{
+    printf("Inside buildNewTrovefile()\n");
+    remove(fileName);
+    FILE* file = fopen(fileName, "w");
+    if(file == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    for(int i = 0; i < location; i++)
+    {
+        //Puts all pathnames into file.
+        fprintf(file,"%s\n",all_files[location]);
+    }
+    //Puts all words into file.
+    getWords(inputLength);
+    fclose(file);
+    
 }
 
 void createIndexFile(linkedlist* dirlist)

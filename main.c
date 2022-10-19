@@ -23,7 +23,7 @@ void get_files(int index)
     {
         printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
         get_filelist(parsedFiles[i]);
-        printFilelist();
+        //printFilelist();
     }
     
 }
@@ -149,6 +149,7 @@ int main(int argc, char *argv[])
     {
         printf("-> Starting to Build <-\n");
         get_files(index);
+        buildNewTrovefile(fileName,inputLength);
         //build a new trove-file from the contents of a filelist. 
         //The new trove-file will replace an existing trove-file of the same name.
     }
