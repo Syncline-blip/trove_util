@@ -7,10 +7,27 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include <string.h>
-
 #define OPTLIST "f:brul:"
 
-char *files[1024];
+
+char *parsedFiles[1024];
+
+void get_files(int index)
+{
+    // for(int i = 0; i < index; i++)
+    // {
+    //     //printf("%d | add_files(%s) CALL]\n", i, parsedFiles[i]);
+    //     add_files(parsedFiles[i]);
+    // }
+    for(int i = 0; i < index; i++)
+    {
+        printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
+        get_filelist(parsedFiles[i]);
+        printFilelist();
+    }
+    
+}
+
 
 void usage()
 {
@@ -30,63 +47,62 @@ void trovefileNotFound()
     exit(EXIT_FAILURE);
 }
 
-void getFiles(int argc, char *args[], char *trovefileName)
-{
-    //Files from argv that're not the trove file in fileName
-    for(int i = 1; i < argc; i++)
-    {
-        //seems to sometimes say yes sometimes no for the same argument.
-        if((isFile(args[i]) || isDirectory(args[i])) && strcmp(args[i], trovefileName) != 0)
-        {
-            files[i] = args[i];
-        }
-    }
-}
 
 int main(int argc, char *argv[])
 {
-    int options, inputLength = 4;
+    int options, index = 0;
+    int inputLength = DEFAULT_LEN ;
     bool fFlag = false, bFlag = false, uFlag = false, rFlag = false, lFlag = false;
     char *fileName = DEFAULT_TROVE_DIR;
     while (optind < argc){
         if((options = getopt(argc,argv, OPTLIST))  != -1)
         {
-                switch(options)
-                {
-                    case 'f': 
-                        fFlag = true;
-                        fileName = strdup(optarg);
-                        break;
-                    case 'b':
-                        bFlag = true;
-                        break;
-                    case 'r':
-                        if(bFlag == true){ usage(); }
-                        rFlag = true;
-                        break;
-                    case 'u':
-                        if(bFlag == true || rFlag == true){ usage(); }
-                        uFlag = true;
-                        break;
-                    case 'l':
-                        inputLength = atoi(optarg); //changed from (int)atol(optarg) because atoi() will throw errors for non integer arguments.
-                        if(inputLength == 0)
-                        {
-                            printf("-l error: invalid argument\n");
-                            exit(EXIT_FAILURE);
-                        }
-                        lFlag = true;
-                        break;
-                    default:
-                        break;
-                }
-        }else{optind++;}
+            switch(options)
+            {
+                case 'f': 
+                    fFlag = true;
+                    fileName = strdup(optarg);
+                    break;
+                case 'b':
+                    bFlag = true;
+                    break;
+                case 'r':
+                    if(bFlag == true){ usage(); }
+                    rFlag = true;
+                    break;
+                case 'u':
+                    if(bFlag == true || rFlag == true){ usage(); }
+                    uFlag = true;
+                    break;
+                case 'l':
+                    inputLength = atoi(optarg); //changed from (int)atol(optarg) because atoi() will throw errors for non integer arguments.
+                    if(inputLength == 0)
+                    {
+                        printf("-l error: invalid argument\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    lFlag = true;
+                    break;
+                default:
+                    break;
+            }
+        }else
+        {
+            parsedFiles[index] = argv[optind]; //Extra options that aren't options such as word or filelist.
+            index++;
+            optind++; //If is not an option argument we move to the next argument.
+            //printf("parsedFiles[index] : %s | index: %d\n",parsedFiles[index-1],index-1);
+        }
     }
-    // argc  += optind;
-    // argv  -= optind;
-    
+    //get_files(index);
+ 
     printf("\nargc: %d\n",argc);
     printf("FLAGS INVOKED:\n-f %d\n-b %d\n-u %d\n-r %d\n-l %d\n\n",fFlag, bFlag, uFlag, rFlag, lFlag);
+    
+
+     /* For TESTING */
+    //if(strcmp(argv[2],"test")){ get_files(index);}
+
 
     if(argc == 2)
     {
@@ -94,19 +110,14 @@ int main(int argc, char *argv[])
         {
             usage();
         }
-        //format of ./trove fileName
-        else if(fileExists(argv[1]))
+        //format: ./trove word
+        else if(fileExists(argv[1]) == 0 || isDirectory(argv[1]) == 0)
         {
-            //Call functions to handle
-            printf("- FEATURE NOT BUILT YET -\n");
-        }
-        else if(fileExists(fileName))
-        {   //format: ./trove word
             readTrovefile(fileName,argv[1]);
         }
         else
         {
-            trovefileNotFound();
+            usage();
         }
     } 
     //In this sitation the input would be './trove -f trovefile' (which is invalid).
@@ -120,7 +131,7 @@ int main(int argc, char *argv[])
         //format: ./trove [-f trovefile] word
         if(isFile(argv[2]))
         {
-            printf("Format: ./trove [-f %s] %s\n", argv[2], argv[3]);
+            printf("Format: ./trove %s [-f %s]\n", argv[1], argv[3]);
             readTrovefile(fileName, argv[3]);
         }
         //format: ./trove word [-f trovefile]
@@ -134,18 +145,22 @@ int main(int argc, char *argv[])
         {
             usage();
         }
-    }else if(bFlag)
+    }else if(bFlag && parsedFiles[0] != NULL) //at least one file to index was parsed into the program.
     {
+        printf("-> Starting to Build <-\n");
+        get_files(index);
         //build a new trove-file from the contents of a filelist. 
         //The new trove-file will replace an existing trove-file of the same name.
     }
-    else if(rFlag)
+    else if(rFlag && parsedFiles[0] != NULL)
     {
+        //get_filelist(index, argv);
         //if any of the files from the filelist appear in the trove-file, 
         //            remove all of their information from the trove-file.
     }
-    else if(uFlag)
+    else if(uFlag && parsedFiles[0] != NULL)
     {
+        //get_filelist(index, argv);
         //update trovefile.
         // -u	            update the trove-file with the contents of all files in the filelist. 
         //            If the information from any of the files already exists in the trove-file, 
@@ -155,8 +170,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        //Loop through argv and get files from the given 'filelist'
-        getFiles(argc, argv, fileName);
+        usage();
 
     }
 

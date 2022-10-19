@@ -2,7 +2,7 @@
 
 PROJECT	= trove
 HEADERS = $(PROJECT).h
-OBJ 	= main.o fileio.o linkedlist.o
+OBJ 	= main.o fileio.o linkedlist.o hashtable.o list.o
 
 C11 = cc -std=c11
 CFLAGS = -Wall -Werror
