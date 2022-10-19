@@ -84,7 +84,6 @@ int stringDigger(char *fName, char *sWord)
         {
             existValue = 1;
             insertDirectory(dirList,fName);
-            fclose(fp);
             break; //We can remove this if we want it to keep searching the file for numerous word occurances.
 
         }
@@ -279,6 +278,7 @@ void readTrovefile(char trovefile[], char* word)
         if(stringDigger(line, word) == 1 && fileExists(line))//Word was found in file
         {
             printf("- Found '%s' in %s\n\n",word,strrchr(line,'/'));
+            //insertDirectory(dirList, line);
             continue;
             //Move onto next path in file and don't remove from trovefile.
         }
