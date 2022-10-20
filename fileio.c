@@ -213,7 +213,7 @@ int traverse(char* directory)
         else if (strcmp(currentDir->d_name, ".") != 0 && strcmp(currentDir->d_name, "..") != 0)
         {
             realpath(currentDir->d_name, buf);
-            printf("file: %s \n", buf);
+            //printf("file: %s \n", buf);
         }
     }
 
@@ -231,6 +231,9 @@ void writeFile(char trovefile[])
     }
 }
 
+// Reads through all files in the provided trovefile,
+// and checks if the given word appears. If not, it is 
+// removed from the file.
 void readTrovefile(char trovefile[], char* word)
 {
    size_t maxl = 256;
