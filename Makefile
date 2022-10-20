@@ -15,4 +15,4 @@ $(PROJECT) : $(OBJ)
 	$(C11) $(CFLAGS) -c $<
 
 clean:
-	rm -f $(PROJECT) $(OBJ)
+	rm -f $(PROJECT) $(OBJ)trove

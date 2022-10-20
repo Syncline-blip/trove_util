@@ -50,7 +50,10 @@ int stringDigger(char *fName, char *sWord)
     }
     FILE*file = fopen(fName, "rb");
     int existValue = 0;
-
+    if(file == NULL)
+    {
+        return existValue;
+    }
     while (fgets(line, maxl, file)) {
         line[strcspn(line, "\r\n")] = 0;
         while(line[strlen(line) - 1] != '\n' && line[strlen(line) - 1] != '\r' && !EOF){
@@ -249,6 +252,7 @@ void readTrovefile(char trovefile[], char* word)
     while (fgets(line, maxl, file)) {
         line[strcspn(line, "\r\n")] = 0;
         while(line[strlen(line) - 1] != '\n' && line[strlen(line) - 1] != '\r' && !EOF){
+            
             char *tmp = realloc (line, 2 * maxl * sizeof(char));
 
             fseek(file,0,SEEK_SET);          //or wherever you want to seek to
@@ -269,6 +273,7 @@ void readTrovefile(char trovefile[], char* word)
         }
 
     }
+    
     remove(trovefile);
     writeFile(trovefile);
     exit(EXIT_SUCCESS);

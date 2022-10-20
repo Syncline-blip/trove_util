@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <string.h>
 #define OPTLIST "f:brul:"
-
+int size;
 
  char *parsedFiles[10000];
 
@@ -19,12 +19,21 @@
       {
           printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
           traverse(parsedFiles[i]);
-          
       }
     
+    printf("exit(EXIT_SUCCESS)\n");
+    exit(EXIT_SUCCESS);
   }
 
+void setSize(int inputLength)
+{
+    size = inputLength;
+}
 
+int getSize()
+{
+    return size;
+}
 void usage()
 {
     printf("Usage:  \t./trove [-f filename] [-b | -r | -u] [-l length] filelist\n\tor\t./trove [-f filename] word\n");
@@ -146,6 +155,8 @@ int main(int argc, char *argv[])
     }else if(bFlag && parsedFiles[0] != NULL) //at least one file to index was parsed into the program.
     {
         printf("-> Starting to Build <-\n");
+        setSize(inputLength);
+        //setTrovefileName(fileName);
         get_files(index);
         //buildNewTrovefile(fileName,inputLength);
         //build a new trove-file from the contents of a filelist.
@@ -195,4 +206,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-

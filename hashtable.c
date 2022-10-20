@@ -145,16 +145,3 @@ void print_table(HashTable* table) {
     }
     printf("-------------------\n\n");
 }
-
-
-// int main() {
-//     HashTable* ht = setTable(DEF_CAP);
-//     insertItem(ht, "1", "firstDirectory");
-//     insertItem(ht, "2", "secondDirectory");
-//     printSearch(ht, "1");
-//     printSearch(ht, "2");
-//     printSearch(ht, "3");
-//     print_table(ht);
-//     freeTable(ht);
-//     return 0;
-// }

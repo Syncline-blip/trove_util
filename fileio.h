@@ -10,4 +10,5 @@ int isFile(char *input);
 int fileExists(char *fName);
 int traverse(char *dirname);
 void writeFile();
+//void setTrovefileName(char *fileName);
 #endif
