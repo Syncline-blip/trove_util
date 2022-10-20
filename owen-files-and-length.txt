@@ -1,11 +1,2 @@
 /Users/owen/documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/main.c
-/Users/owen/documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/fileio.cUsers
-trove
-Users
-trove
-documents
-documents
-documents
-documents
-documents
-documents
+/Users/owen/documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/fileio

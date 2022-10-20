@@ -4,6 +4,7 @@
         "hashtable.h": "c",
         "glob.h": "c",
         "linkedlist.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "__locale": "c"
     }
 }

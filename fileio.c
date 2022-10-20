@@ -187,10 +187,10 @@ int traverse(char* directory)
 
     if (traverser == NULL)
     {
-        printf("Error: Could not open directory.\n");
-        return 0;
+        printf("Error: Could not open directory: '%s'\n",directory);
+        exit(0);
     }
-    int forkCount =0;
+    int forkCount = 0;
     char buf[1024 + 1];
     while ((currentDir = readdir(traverser)) != NULL)
     {
@@ -224,12 +224,12 @@ int traverse(char* directory)
     return 0;
 }
 
-void writeFile(char trovefile[])
+void writeFile(HashTable *table,char trovefile[])
 {
     FILE *file = fopen(trovefile,"w");
-    for (int i=0; i<ht->tableSize; i++) {
-        if (ht->hashItem[i]) {
-            fprintf(file,"%s\n",ht->hashItem[i]->value);
+    for (int i=0; i<table->tableSize; i++) {
+        if (table->hashItem[i]) {
+            fprintf(file,"%s\n",table->hashItem[i]->value);
         }
     }
 }
@@ -275,6 +275,73 @@ void readTrovefile(char trovefile[], char* word)
     }
     
     remove(trovefile);
-    writeFile(trovefile);
+    writeFile(ht, trovefile);
     exit(EXIT_SUCCESS);
 }
+
+void removeFiles(char *fileName)
+{
+    HashTable *table = setTable(50000);
+    FILE*file = fopen(fileName, "r");
+    size_t maxl = 256;
+    char* key = "1";
+    char *line = malloc(maxl * sizeof(char));
+    while (fgets(line, maxl, file)) 
+    {
+        line[strcspn(line, "\r\n")] = 0;
+        for (int i=0; i<ht->tableSize; i++) 
+        {
+            if(strcmp(ht->hashItem[i]->value, line) == 0)
+            {
+                insertItem(table,key,line);
+                key++;    
+            }
+        }
+    }
+    fclose(file);
+    remove(fileName);
+    writeFile(table, fileName);
+
+}
+
+// void updateTrovefile(char trovefile[])
+// {
+//    size_t maxl = 256;
+    
+//     char *line = malloc(maxl * sizeof(char));
+//     if(!line){
+//         printf("Memory not allocated!!\n");
+//         exit(EXIT_FAILURE);
+//     }
+//     FILE*file = fopen(trovefile, "r");
+//     char* key = "1";
+//     ht = setTable(50000);
+//     while (fgets(line, maxl, file)) {
+//         line[strcspn(line, "\r\n")] = 0;
+//         while(line[strlen(line) - 1] != '\n' && line[strlen(line) - 1] != '\r' && !EOF){
+            
+//             char *tmp = realloc (line, 2 * maxl * sizeof(char));
+
+//             fseek(file,0,SEEK_SET);          //or wherever you want to seek to
+//             if (tmp) {
+//                 line = tmp;
+//                 maxl *= 2;
+//                 fgets(line, maxl, file);
+//             }
+//             else{
+//                 printf("Not enough memory for this line!!\n");
+//                 exit(EXIT_FAILURE);
+//             }
+//         }
+//         if(stringDigger(line,word) == 1)
+//         {
+//             insertItem(ht, key, line);
+//             key++;
+//         }
+
+//     }
+    
+//     remove(trovefile);
+//     writeFile(trovefile);
+//     exit(EXIT_SUCCESS);
+// }

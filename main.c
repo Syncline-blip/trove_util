@@ -156,21 +156,32 @@ int main(int argc, char *argv[])
     {
         printf("-> Starting to Build <-\n");
         setSize(inputLength);
-        //setTrovefileName(fileName);
         get_files(index);
-        //buildNewTrovefile(fileName,inputLength);
+
         //build a new trove-file from the contents of a filelist.
         //The new trove-file will replace an existing trove-file of the same name.
     }
     else if(rFlag && parsedFiles[0] != NULL)
     {
+        printf("-r flag\n");
+        for(int i = 0; i < index; i++)
+        {
+          printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
+          traverse(parsedFiles[i]);
+        }
+        removeFiles(fileName);
         //get_filelist(index, argv);
         //if any of the files from the filelist appear in the trove-file,
         //            remove all of their information from the trove-file.
     }
     else if(uFlag && parsedFiles[0] != NULL)
     {
-        //get_filelist(index, argv);
+        for(int i = 0; i < index; i++)
+        {
+          printf("\t-u invoked | '%s'\n", parsedFiles[i]);
+          traverse(parsedFiles[i]);
+        }
+
         //update trovefile.
         // -u                update the trove-file with the contents of all files in the filelist.
         //            If the information from any of the files already exists in the trove-file,

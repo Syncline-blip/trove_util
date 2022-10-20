@@ -10,5 +10,6 @@ int isFile(char *input);
 int fileExists(char *fName);
 int traverse(char *dirname);
 void writeFile();
+void removeFiles(char *fileName);
 //void setTrovefileName(char *fileName);
 #endif
