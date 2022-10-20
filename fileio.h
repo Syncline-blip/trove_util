@@ -11,5 +11,5 @@ int fileExists(char *fName);
 int traverse(char *dirname);
 void writeFile();
 void removeFiles(char *fileName);
-//void setTrovefileName(char *fileName);
+void populate(char *file,char *key);
 #endif

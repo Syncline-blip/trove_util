@@ -20,6 +20,7 @@
 #include <glob.h>
 #include "fileio.h"
 #include "HashTable.h"
+#include "main.h"
 #define DELIMS "-`~!@#$%^&*();[]\{}}|<>?.,_+=:'\t'\"'\n''//''/*''*\' "
 typedef struct {
     char fileName[100];
@@ -36,6 +37,7 @@ typedef struct
 HashTable* ht;
 int position = 0;
 static int forks[DEFAULT_SIZE];
+HashTable* files;
 
 
 // Looks for the given source
@@ -216,12 +218,23 @@ int traverse(char* directory)
         else if (strcmp(currentDir->d_name, ".") != 0 && strcmp(currentDir->d_name, "..") != 0)
         {
             realpath(currentDir->d_name, buf);
+            stringByLength(currentDir->d_name,getSize());
             //printf("file: %s \n", buf);
         }
     }
 
     closedir(traverser);
     return 0;
+}
+
+//Used for -r
+void populate(char *file,char *key)
+{
+    printf("Populating ht -> %s\n",file);
+    if(ht == NULL){
+        setTable(5000);
+    }else{ insertItem(ht,key,file); }
+    printf("Populated\n");
 }
 
 void writeFile(HashTable *table,char trovefile[])
@@ -298,6 +311,7 @@ void removeFiles(char *fileName)
             }
         }
     }
+    printf("Here\n");
     fclose(file);
     remove(fileName);
     writeFile(table, fileName);

@@ -163,11 +163,13 @@ int main(int argc, char *argv[])
     }
     else if(rFlag && parsedFiles[0] != NULL)
     {
+        char *key = "1";
         printf("-r flag\n");
         for(int i = 0; i < index; i++)
         {
           printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
-          traverse(parsedFiles[i]);
+          populate(parsedFiles[i], key);
+          key++;
         }
         removeFiles(fileName);
         //get_filelist(index, argv);
