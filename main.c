@@ -1,3 +1,4 @@
+//new
 #include <stdio.h>
 #include <stdlib.h>
 #include "fileio.h"
@@ -10,23 +11,18 @@
 #define OPTLIST "f:brul:"
 
 
-char *parsedFiles[1024];
+ char *parsedFiles[10000];
 
-void get_files(int index)
-{
-    // for(int i = 0; i < index; i++)
-    // {
-    //     //printf("%d | add_files(%s) CALL]\n", i, parsedFiles[i]);
-    //     add_files(parsedFiles[i]);
-    // }
-    for(int i = 0; i < index; i++)
-    {
-        printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
-        get_filelist(parsedFiles[i]);
-        //printFilelist();
-    }
+  void get_files(int index)
+  {
+      for(int i = 0; i < index; i++)
+      {
+          printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
+          traverse(parsedFiles[i]);
+          
+      }
     
-}
+  }
 
 
 void usage()
@@ -59,7 +55,7 @@ int main(int argc, char *argv[])
         {
             switch(options)
             {
-                case 'f': 
+                case 'f':
                     fFlag = true;
                     fileName = strdup(optarg);
                     break;
@@ -89,6 +85,7 @@ int main(int argc, char *argv[])
         }else
         {
             parsedFiles[index] = argv[optind]; //Extra options that aren't options such as word or filelist.
+            printf("file: %s\n",parsedFiles[index]);
             index++;
             optind++; //If is not an option argument we move to the next argument.
             //printf("parsedFiles[index] : %s | index: %d\n",parsedFiles[index-1],index-1);
@@ -98,7 +95,8 @@ int main(int argc, char *argv[])
  
     printf("\nargc: %d\n",argc);
     printf("FLAGS INVOKED:\n-f %d\n-b %d\n-u %d\n-r %d\n-l %d\n\n",fFlag, bFlag, uFlag, rFlag, lFlag);
-    
+//    list_directory(argv[1]);
+//    exit(1);
 
      /* For TESTING */
     //if(strcmp(argv[2],"test")){ get_files(index);}
@@ -119,12 +117,12 @@ int main(int argc, char *argv[])
         {
             usage();
         }
-    } 
+    }
     //In this sitation the input would be './trove -f trovefile' (which is invalid).
     else if(argc == 3 && fFlag)
     {
-        usage(); 
-    } 
+        usage();
+    }
     //Format: ./trove -f trovefile 'word' || ./trove 'word' -f trovefile (is the only 2 options for this)
     else if(argc == 4 && fFlag)
     {
@@ -140,7 +138,7 @@ int main(int argc, char *argv[])
             printf("Format: ./trove %s [-f %s]\n", argv[1], argv[3]);
             readTrovefile(fileName, argv[1]);
         }
-        //else there's something dodgy with the arguments. 
+        //else there's something dodgy with the arguments.
         else
         {
             usage();
@@ -149,23 +147,23 @@ int main(int argc, char *argv[])
     {
         printf("-> Starting to Build <-\n");
         get_files(index);
-        buildNewTrovefile(fileName,inputLength);
-        //build a new trove-file from the contents of a filelist. 
+        //buildNewTrovefile(fileName,inputLength);
+        //build a new trove-file from the contents of a filelist.
         //The new trove-file will replace an existing trove-file of the same name.
     }
     else if(rFlag && parsedFiles[0] != NULL)
     {
         //get_filelist(index, argv);
-        //if any of the files from the filelist appear in the trove-file, 
+        //if any of the files from the filelist appear in the trove-file,
         //            remove all of their information from the trove-file.
     }
     else if(uFlag && parsedFiles[0] != NULL)
     {
         //get_filelist(index, argv);
         //update trovefile.
-        // -u	            update the trove-file with the contents of all files in the filelist. 
-        //            If the information from any of the files already exists in the trove-file, 
-        //            then that (old) information is first removed. 
+        // -u                update the trove-file with the contents of all files in the filelist.
+        //            If the information from any of the files already exists in the trove-file,
+        //            then that (old) information is first removed.
     
     
     }
@@ -177,23 +175,24 @@ int main(int argc, char *argv[])
 
 
 /*
-    -b	            build a new trove-file from the contents of a filelist. 
+    -b                build a new trove-file from the contents of a filelist.
                     The new trove-file will replace an existing trove-file of the same name.
 
-    -f trovefile	provide the name of the trove-file to be built or searched. 
+    -f trovefile    provide the name of the trove-file to be built or searched.
                     If the -f option is not provided, the default name of the trove-file is /tmp/trove
 
-    -l length	    only words of at least the indicated length should be added to the trove-file. 
+    -l length        only words of at least the indicated length should be added to the trove-file.
                     length must be a positive integer, for example: -l 6.
                     If the -l option is not provided, the default length is 4.
 
-    -r	            if any of the files from the filelist appear in the trove-file, 
+    -r                if any of the files from the filelist appear in the trove-file,
                     remove all of their information from the trove-file.
 
-    -u	            update the trove-file with the contents of all files in the filelist. 
-                    If the information from any of the files already exists in the trove-file, 
-                    then that (old) information is first removed. 
+    -u                update the trove-file with the contents of all files in the filelist.
+                    If the information from any of the files already exists in the trove-file,
+                    then that (old) information is first removed.
 */
 
     return 0;
 }
+

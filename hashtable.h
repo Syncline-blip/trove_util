@@ -1,15 +1,31 @@
-#include "list.h"
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
 
-//  WE DEFINE A HASHTABLE AS A (WILL BE, DYNAMICALLY ALLOCATED) ARRAY OF LISTs
-typedef	LIST * HASHTABLE;
+// Struct for the item, its hashkey and actual value.
+typedef struct HashItem 
+{
+    char* key;
+    char* value;
 
-//  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN hashtable.c :
+} HashItem;
 
-//  ALLOCATE SPACE FOR A NEW HASHTABLE (AND ARRAY OF LISTS)
-extern	HASHTABLE	*hashtable_new(void);
+// Struct for the table
+typedef struct HashTable 
+{
+    
+    HashItem** hashItem;
+    int tableSize;
+    int itemCount;
+    
+}HashTable;
 
-//  ADD A NEW STRING TO A GIVEN HASHTABLE
-extern	void		 hashtable_add( HASHTABLE *, char *string);
-
-//  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
-extern	bool		 hashtable_find(HASHTABLE *, char *string);
+unsigned long hash(char* value);
+HashTable*setTable(int tableSize);
+HashItem* setItem(char*key, char*value);
+void freeItem(HashItem* item);
+void freeTable(HashTable* table);
+void insertItem(HashTable*table, char* inKey, char* inValue);
+char* itemSearch(HashTable* table, char*inKey);
+void printSearch(HashTable* table, char*key, char*writeTo);
+void print_table(HashTable* table);
+#endif
