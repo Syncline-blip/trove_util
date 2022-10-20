@@ -9,4 +9,5 @@ void readTrovefile(char trovefile[], char* word);
 int isFile(char *input);
 int fileExists(char *fName);
 int traverse(char *dirname);
+void writeFile();
 #endif

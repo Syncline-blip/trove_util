@@ -129,13 +129,13 @@ int main(int argc, char *argv[])
         //format: ./trove [-f trovefile] word
         if(isFile(argv[2]))
         {
-            printf("Format: ./trove [-f %s] %s\n", argv[2], argv[3]);
+            //printf("Format: ./trove [-f %s] %s\n", argv[2], argv[3]);
             readTrovefile(fileName, argv[3]);
         }
         //format: ./trove word [-f trovefile]
         else if(isFile(argv[3]))
         {
-            printf("Format: ./trove %s [-f %s]\n", argv[1], argv[3]);
+            //printf("Format: ./trove %s [-f %s]\n", argv[1], argv[3]);
             readTrovefile(fileName, argv[1]);
         }
         //else there's something dodgy with the arguments.

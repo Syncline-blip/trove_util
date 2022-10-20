@@ -221,10 +221,19 @@ int traverse(char* directory)
     return 0;
 }
 
+void writeFile(char trovefile[])
+{
+    FILE *file = fopen(trovefile,"w");
+    for (int i=0; i<ht->tableSize; i++) {
+        if (ht->hashItem[i]) {
+            fprintf(file,"%s\n",ht->hashItem[i]->value);
+        }
+    }
+}
+
 void readTrovefile(char trovefile[], char* word)
 {
    size_t maxl = 256;
-    //char line[256];
     
     char *line = malloc(maxl * sizeof(char));
     if(!line){
@@ -253,11 +262,11 @@ void readTrovefile(char trovefile[], char* word)
         if(stringDigger(line,word) == 1)
         {
             insertItem(ht, key, line);
-            printSearch(ht,key, "newTrove.txt");
             key++;
         }
-        stringByLength(line, 5);
 
     }
-
+    remove(trovefile);
+    writeFile(trovefile);
+    exit(EXIT_SUCCESS);
 }
