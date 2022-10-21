@@ -20,7 +20,6 @@ int size;
           printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
           traverse(parsedFiles[i]);
       }
-    
     printf("exit(EXIT_SUCCESS)\n");
     exit(EXIT_SUCCESS);
   }

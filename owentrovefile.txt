@@ -1,10 +1,12 @@
-hï°Áþ
-O±0p
-€y†y
-ÅTUÏ
-Àsv¾
-Ân˜C
- Ð
-¼0ëR
-î‹¾ˆZ
-ëm‘Šx
+zombie
+/Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/test_data/basic.txt
+string
+tester
+/Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/test_data/crazy.txt
+stdlib
+SOURCE
+define
+SOURCE
+define
+define
+printf
