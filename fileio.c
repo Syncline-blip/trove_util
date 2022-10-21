@@ -1,3 +1,7 @@
+//  CITS2002 Project 2 2022
+//  Student1:   22957291   Smith   Owen   50%
+//  Student2:   23419439   Lumagbas   John   50%
+
 #define DEFAULT_SIZE 1024
 #define _DEFAULT_SOURCE
 #define _GNU_SOURCE

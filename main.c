@@ -1,3 +1,6 @@
+//  CITS2002 Project 2 2022
+//  Student1:   22957291   Smith   Owen   50%
+//  Student2:   23419439   Lumagbas   John   50%
 #include <stdio.h>
 #include <stdlib.h>
 #include "fileio.h"
