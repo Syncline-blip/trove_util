@@ -1,6 +1,6 @@
 #ifndef FILEIO_H
 #define FILEIO_H
-#include "HashTable.h"
+#include "hashtable.h"
 
 void add_files(char *pathname);
 int stringDigger(char* fName, char* sWord);
