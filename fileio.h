@@ -12,4 +12,5 @@ int traverse(char *dirname);
 void writeFile();
 void removeFiles(char *fileName);
 void populate(char *file,char *key);
+void setName(char *name);
 #endif

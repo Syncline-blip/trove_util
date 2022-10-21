@@ -18,6 +18,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <glob.h>
+#include <ctype.h>
 #include "fileio.h"
 #include "HashTable.h"
 #include "main.h"
@@ -38,8 +39,12 @@ HashTable* ht;
 int position = 0;
 static int forks[DEFAULT_SIZE];
 HashTable* files;
+char *troveName;
 
-
+void setName(char *name)
+{
+    troveName = name;
+}
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
 {
@@ -91,6 +96,7 @@ int stringDigger(char *fName, char *sWord)
 
 void stringByLength(char *fName, int size)
 {
+    printf("stringByLength(%s,%d)\n",fName,size);
     size_t maxl = 256;
     //char line[256];
     char *line = malloc(maxl * sizeof(char));
@@ -98,11 +104,15 @@ void stringByLength(char *fName, int size)
         printf("Memory not allocated!!\n");
         exit(EXIT_FAILURE);
     }
+    printf("here(%s, %d)\n",fName,size);
     FILE*file = fopen(fName, "r");
+    printf("here(%s, %d) | %d\n",fName,size, file==NULL);
     ht = setTable(50000);
     char* key = "1";
     while (fgets(line, maxl, file)) {
+        printf("stringByLength(%s, %d) IM HERE\n",fName,size);
         line[strcspn(line, "\r\n")] = 0;
+        printf("stringByLength(%s, %d)\n",fName,size);
         while(line[strlen(line) - 1] != '\n' && line[strlen(line) - 1] != '\r' && !EOF){
             char *tmp = realloc (line, 2 * maxl * sizeof(char));
 
@@ -119,25 +129,41 @@ void stringByLength(char *fName, int size)
             }
         }
         
-        
+        // char word[100] = "";
+        // int count = 0;
+        // for(int i = 0; line[i] != 0; i++)
+        // {
+        //     if(count == 6 && !isalpha(line[i]) && !isdigit(line[i]))
+        //     {
+        //         insertItem(ht, key, word);
+        //         count = 0;
+        //     }
+        //     if(isalpha(line[i]) || isdigit(line[i]))
+        //     {
+        //         printf("%d | %c\n",count,line[i]);
+        //         strcat(word, &line[i]);
+        //         count++;
+        //     }else
+        //     {
+        //         count = 0;
+        //     }
+        // }
+        printf("line: %s\n",line);
         for(char* p = strtok(line,DELIMS); p; p = strtok(NULL,DELIMS))
         {
-            
+            printf("p: %s\n",p);
             if(strlen(p) == size && !strstr(p,DELIMS))
             {
                 if(itemSearch(ht,key) == NULL){
                     insertItem(ht, key, p);
-                    printf ("%s\n", p);
-                    printSearch(ht,key,"words");
+                    printSearch(ht,key,troveName);
+                    key++;
                 }
                
-//                printf("Already in hashtable\n");
             }
-            key++;
             
+            }
         }
-        
-    }
   
     fclose(file);
 }
@@ -186,11 +212,21 @@ int traverse(char* directory)
 {
     struct dirent *currentDir;
     DIR *traverser = opendir(directory);
-
-    if (traverser == NULL)
+    char *tmp = strrchr(directory, '/');
+    tmp++;
+    printf("tmp: %s\n", tmp);
+    if(traverser == NULL)
     {
-        printf("Error: Could not open directory: '%s'\n",directory);
-        exit(0);
+        FILE *fp = fopen(directory, "r");
+        if(fp == NULL){
+            printf("Error: Could not open directory: '%s'\n",directory);
+            exit(0);
+        }
+        else if(strcmp(tmp, ".") != 0 && strcmp(tmp, "..") != 0){
+            printf("trying to search: %s\n",directory);
+            stringByLength(directory,getSize());
+            return 1;
+        }
     }
     int forkCount = 0;
     char buf[1024 + 1];
@@ -205,6 +241,7 @@ int traverse(char* directory)
                 forkCount++;
                 char pathBuffer[1024];
                 snprintf(pathBuffer, sizeof(pathBuffer), "%s/%s", directory, currentDir->d_name);
+                printf("traverse(%s)\n",pathBuffer);
                 traverse(pathBuffer);
                 exit(0);
             }
@@ -218,7 +255,8 @@ int traverse(char* directory)
         else if (strcmp(currentDir->d_name, ".") != 0 && strcmp(currentDir->d_name, "..") != 0)
         {
             realpath(currentDir->d_name, buf);
-            stringByLength(currentDir->d_name,getSize());
+            printf("currentDir->d_name: %s\nfilepath:%s\n",currentDir->d_name,buf);
+            stringByLength(buf,getSize());
             //printf("file: %s \n", buf);
         }
     }
@@ -232,7 +270,7 @@ void populate(char *file,char *key)
 {
     printf("Populating ht -> %s\n",file);
     if(ht == NULL){
-        setTable(5000);
+        ht = setTable(5000);
     }else{ insertItem(ht,key,file); }
     printf("Populated\n");
 }

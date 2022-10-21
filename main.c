@@ -155,6 +155,7 @@ int main(int argc, char *argv[])
     }else if(bFlag && parsedFiles[0] != NULL) //at least one file to index was parsed into the program.
     {
         printf("-> Starting to Build <-\n");
+        setName(fileName);
         setSize(inputLength);
         get_files(index);
 
