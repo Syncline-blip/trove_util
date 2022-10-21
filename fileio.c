@@ -20,7 +20,7 @@
 #include <glob.h>
 #include <ctype.h>
 #include "fileio.h"
-#include "HashTable.h"
+#include "hashtable.h"
 #include "main.h"
 #define DELIMS "-`~!@#$%^&*();[]\{}}|<>?.,_+=:'\t'\"'\n''//''/*''*\' "
 typedef struct {

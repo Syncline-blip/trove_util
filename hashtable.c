@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "HashTable.h"
+#include "hashtable.h"
 
 #define DEF_CAP 39293
 
