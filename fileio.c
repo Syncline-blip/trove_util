@@ -254,9 +254,11 @@ int traverse(char* directory)
         }
         else if (strcmp(currentDir->d_name, ".") != 0 && strcmp(currentDir->d_name, "..") != 0)
         {
-            realpath(currentDir->d_name, buf);
+            //realpath(currentDir->d_name, buf);
+            char pathBuffer[1024];
+            snprintf(pathBuffer, sizeof(pathBuffer), "%s/%s", directory, currentDir->d_name);
             printf("currentDir->d_name: %s\nfilepath:%s\n",currentDir->d_name,buf);
-            stringByLength(buf,getSize());
+            stringByLength(pathBuffer,getSize());
             //printf("file: %s \n", buf);
         }
     }
