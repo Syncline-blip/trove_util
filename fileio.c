@@ -91,6 +91,7 @@ char* decompress(char * fileToOpen)
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
 {
+    printf("In string digger\n");
     size_t maxl = 256;
     //char line[256];
     char *line = malloc(maxl * sizeof(char));
@@ -133,6 +134,7 @@ int stringDigger(char *fName, char *sWord)
     }
     fclose(file);
 
+    printf("String digger returning.\n");
     return existValue;
 }
 

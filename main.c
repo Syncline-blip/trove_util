@@ -113,8 +113,7 @@ int main(int argc, char *argv[])
         else //if(fileExists(argv[1]) == 0 || isDirectory(argv[1]) == 0)
         {
             printf("Format: ./trove %s | %s\n", argv[1],fileName);
-            traverse(fileName);
-            // readTrovefile(fileName,argv[1]);
+            readTrovefile(fileName,argv[1]);
         }
         // else
         // {
