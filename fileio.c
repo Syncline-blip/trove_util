@@ -46,6 +46,48 @@ void setName(char *name)
 {
     troveName = name;
 }
+
+void compress(char* fileToCompress)
+{
+    char buf[DEFAULT_SIZE];
+    snprintf(buf, sizeof(buf), "gzip -k %s", fileToCompress);
+    system(buf);
+}
+
+char* decompress(char * fileToOpen)
+{
+    char buf[DEFAULT_SIZE];
+    snprintf(buf, sizeof(buf), "zcat %s", fileToOpen); // Needs a buffer for fileToOpen
+    FILE*fp =popen(buf, "r");
+    size_t sz = 256;
+    char *line = malloc(sz * sizeof(char));
+    while (fgets(line, sz, fp)) {
+
+        line[strcspn(line, "\r\n")] = 0;
+
+        while(line[strlen(line) - 1] != '\n' && line[strlen(line) - 1] != '\r' && !EOF)
+        {
+            char *tmp = realloc (line, 2*sz * sizeof(char));
+
+            fseek(fp,0,SEEK_SET);
+            if (tmp) {
+                line = tmp;
+                sz *= 2;
+                fgets(line, sz, fp);
+
+            }
+            else{
+                printf("Not enough memory for this line!!\n");
+                exit(EXIT_FAILURE);
+            }
+
+        }
+        printf("%s\n",line);
+    }
+
+    return line;
+}
+
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
 {
