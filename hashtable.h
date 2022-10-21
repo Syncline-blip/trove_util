@@ -1,6 +1,6 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
-
+#include "hashtable.h"
 // Struct for the item, its hashkey and actual value.
 typedef struct HashItem 
 {

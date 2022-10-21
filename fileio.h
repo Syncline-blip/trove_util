@@ -14,4 +14,6 @@ void removeFiles(char *fileName);
 void populate(char *file,char *key);
 void setName(char *name);
 int checkString(char str1[], int size);
+int checkGZ(char fileToCheck[]);
+char decompress(char *fileToOpen);
 #endif

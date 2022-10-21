@@ -22,7 +22,7 @@
 #include "fileio.h"
 #include "hashtable.h"
 #include "main.h"
-#define DELIMS "-`~!@#$%^&*();[]\{}}|<>?.,_+=:'\t'\"'\n''//''/*''*\' "
+
 typedef struct {
     char fileName[100];
     char filePath[DEFAULT_SIZE];
@@ -50,8 +50,21 @@ void setName(char *name)
 void compress(char* fileToCompress)
 {
     char buf[DEFAULT_SIZE];
+    printf("compressing\n");
     snprintf(buf, sizeof(buf), "gzip -k %s", fileToCompress);
     system(buf);
+}
+
+int checkGZ(char fileToCheck[])
+{
+    char* gzFormat = ".gz";
+    char* zipFormat = ".zip";
+    if(strstr(gzFormat, fileToCheck) || strstr(zipFormat, fileToCheck))
+    {
+        return 0;
+    }
+    return 1;
+
 }
 
 char* decompress(char * fileToOpen)
@@ -91,7 +104,6 @@ char* decompress(char * fileToOpen)
 // Looks for the given source
 int stringDigger(char *fName, char *sWord)
 {
-    printf("In string digger\n");
     size_t maxl = 256;
     //char line[256];
     char *line = malloc(maxl * sizeof(char));
@@ -126,53 +138,17 @@ int stringDigger(char *fName, char *sWord)
         {
             existValue = 1;
             printf("-> found in: %s\n", fName);
-            break; //We can remove this if we want it to keep searching the file for numerous word occurances.
-
+            break;
         }
 
-        
     }
     fclose(file);
-
-    printf("String digger returning.\n");
     return existValue;
 }
 
-// // works
-// int checkString(char str1[], int size)
-//  {
-//   char word[] = "";
-//   int i = 0, count = 0; //p,
-//   //p=strlen(str1);
-//   while (str1[i] != '\0')
-//     {
-//     printf("str: %s | i: %d | count: %d | size: %d | word: '%s'\n",str1,str1[i],count,size,word);
-//     if ((str1[i] >= 'a' && str1[i] <= 'z') || (str1[i] >= 'A' && str1[i] <= 'Z') || isdigit(str1[i])!=0 )
-//     {
-//         if(i == size+1) 
-//         {
-//             count = 0;
-//             i++;
-//         }else
-//         {
-//             strcat(word,&str1[i]);
-//             count++;
-//             i++;
-//         }
-        
-//     }else if(count == size) //Reached a non alphanumeric character and the word is len
-//     {
-//         printf("word: %s\n",word);
-//         return 1;
-//     }
-//     else
-//     {
-//         count = 0;
-//         i++;
-//     }
-// }
-// return 0; 
-// }  
+
+// Searches through a file line by line to see if there are any words
+// matching the provided size.
 void stringByLength(char *fName, int size)
 {
     //printf("stringByLength(%s,%d)\n",fName,size);
@@ -223,7 +199,7 @@ void stringByLength(char *fName, int size)
 
             if(strlen(word) == size){
                 if(itemSearch(ht,key) == NULL){
-                    printf("Word: '%s' found in %s\n", word, fName);
+                    //printf("Word: '%s' found in %s\n", word, fName);
                     insertItem(ht, key, word);
                     //printSearch(ht,key,troveName);
                     key++;
@@ -290,7 +266,7 @@ int traverse(char* directory)
     {
         FILE *fp = fopen(directory, "r");
         if(fp == NULL){
-            printf("Error: Could not open directory: '%s'\n",directory);
+            perror("ERROR: ");
             exit(0);
         }
         else if(strcmp(tmp, ".") != 0 && strcmp(tmp, "..") != 0){
@@ -378,6 +354,11 @@ void readTrovefile(char trovefile[], char* word)
         exit(EXIT_FAILURE);
     }
     FILE*file = fopen(trovefile, "r");
+    if(file == NULL)
+    {
+        perror("Error: ");
+        exit(EXIT_FAILURE);
+    }
     char* key = "1";
     ht = setTable(50000);
     while (fgets(line, maxl, file)) {
@@ -430,7 +411,6 @@ void removeFiles(char *fileName)
             }
         }
     }
-    printf("Here\n");
     fclose(file);
     remove(fileName);
     writeFile(table, fileName);
