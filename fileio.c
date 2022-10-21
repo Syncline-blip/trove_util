@@ -164,16 +164,15 @@ void stringByLength(char *fName, int size)
                 exit(EXIT_FAILURE);
             }
         }
-        //printf("line: %s\n",line);
-        //char* p = malloc(strlen(line) + 1);
+        //Removes non-alphanumeric characters from the line and replaces with spaces
         for (char *p = line; *p; p++)
         {
             if(!(isalpha(*p) || isdigit(*p)))
             {
-                //printf("p:%s\n",p);
                 *p = ' ';
             }
         }
+        //Then strtok() with the spaces as DELIM and get the words by length.
         char *word;
         for(word = strtok(line," "); word; word = strtok(NULL," "))
         {
@@ -197,7 +196,7 @@ int fileExists(char *fName)
 {
     glob_t gstruct;
     int r;
-    r = glob(fName, GLOB_ERR , NULL, &gstruct); // Need to look for an exact match
+    r = glob(fName, GLOB_ERR , NULL, &gstruct);
 
     if(r!= 0)
     {
@@ -265,13 +264,11 @@ int traverse(char* directory)
         if (currentDir->d_type == DT_DIR && strcmp(currentDir->d_name, ".") != 0 && strcmp(currentDir->d_name, "..") != 0)
         {
             int PID = fork();
-
             if (PID == 0)
             {
                 forkCount++;
                 char pathBuffer[1024];
                 snprintf(pathBuffer, sizeof(pathBuffer), "%s/%s", directory, currentDir->d_name);
-                //printf("traverse(%s)\n",pathBuffer);
                 traverse(pathBuffer);
                 exit(0);
             }
@@ -279,22 +276,18 @@ int traverse(char* directory)
             {
                 forks[forkCount] = PID;
                 int status = 0;
-                wait(&status); //wait at end
+                wait(&status);
             }
         }
         else if (strcmp(currentDir->d_name, ".") != 0 && strcmp(currentDir->d_name, "..") != 0)
         {
-            //realpath(currentDir->d_name, buf);
             char pathBuffer[1024];
             snprintf(pathBuffer, sizeof(pathBuffer), "%s/%s", directory, currentDir->d_name);
-            //printf("currentDir->d_name: %s\nfilepath:%s\n",currentDir->d_name,pathBuffer);
             insertItem(files,fKey,pathBuffer);
             fKey++;
             stringByLength(pathBuffer,getSize());
-            //printf("file: %s \n", buf);
         }
     }
-
     closedir(traverser);
     return 0;
 }
@@ -317,9 +310,11 @@ void writeFile(HashTable *table,char trovefile[])
             fprintf(file,"%s\n",table->hashItem[i]->value);
             //printf("table->hashItem[i]->value: %s\n",table->hashItem[i]->value);
         }
-        if (files->hashItem[i]) {
-            fprintf(file,"%s\n",files->hashItem[i]->value);
-            //printf("table->hashItem[i]->value: %s\n",table->hashItem[i]->value);
+        if(files != NULL){
+            if (files->hashItem[i]) {
+                fprintf(file,"%s\n",files->hashItem[i]->value);
+                //printf("table->hashItem[i]->value: %s\n",table->hashItem[i]->value);
+            }
         }
 
     }

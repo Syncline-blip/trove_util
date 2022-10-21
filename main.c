@@ -1,8 +1,7 @@
-//new
 #include <stdio.h>
 #include <stdlib.h>
 #include "fileio.h"
-#define DEFAULT_TROVE_DIR "tmp/trove"
+#define DEFAULT_TROVE_DIR "/tmp/trove"
 #define DEFAULT_LEN 4
 #include <unistd.h> 
 #include <getopt.h>
@@ -20,6 +19,7 @@ int size;
           printf("\tIn get_files() | '%s'\n", parsedFiles[i]);
           traverse(parsedFiles[i]);
       }
+    
     printf("exit(EXIT_SUCCESS)\n");
     exit(EXIT_SUCCESS);
   }
@@ -92,23 +92,16 @@ int main(int argc, char *argv[])
             }
         }else
         {
-            parsedFiles[index] = argv[optind]; //Extra options that aren't options such as word or filelist.
-            printf("file: %s\n",parsedFiles[index]);
+            //Extra arguments that aren't options such as word or filelist.
+            parsedFiles[index] = argv[optind];
             index++;
             optind++; //If is not an option argument we move to the next argument.
-            //printf("parsedFiles[index] : %s | index: %d\n",parsedFiles[index-1],index-1);
         }
     }
-    //get_files(index);
+
  
-    printf("\nargc: %d\n",argc);
+    //printf("\nargc: %d\n",argc);
     printf("FLAGS INVOKED:\n-f %d\n-b %d\n-u %d\n-r %d\n-l %d\n\n",fFlag, bFlag, uFlag, rFlag, lFlag);
-//    list_directory(argv[1]);
-//    exit(1);
-
-     /* For TESTING */
-    //if(strcmp(argv[2],"test")){ get_files(index);}
-
 
     if(argc == 2)
     {
@@ -117,14 +110,16 @@ int main(int argc, char *argv[])
             usage();
         }
         //format: ./trove word
-        else if(fileExists(argv[1]) == 0 || isDirectory(argv[1]) == 0)
+        else //if(fileExists(argv[1]) == 0 || isDirectory(argv[1]) == 0)
         {
-            readTrovefile(fileName,argv[1]);
+            printf("Format: ./trove %s | %s\n", argv[1],fileName);
+            traverse(fileName);
+            // readTrovefile(fileName,argv[1]);
         }
-        else
-        {
-            usage();
-        }
+        // else
+        // {
+        //     usage();
+        // }
     }
     //In this sitation the input would be './trove -f trovefile' (which is invalid).
     else if(argc == 3 && fFlag)
@@ -139,12 +134,14 @@ int main(int argc, char *argv[])
         {
             //printf("Format: ./trove [-f %s] %s\n", argv[2], argv[3]);
             readTrovefile(fileName, argv[3]);
+            exit(EXIT_SUCCESS);
         }
         //format: ./trove word [-f trovefile]
         else if(isFile(argv[3]))
         {
             //printf("Format: ./trove %s [-f %s]\n", argv[1], argv[3]);
             readTrovefile(fileName, argv[1]);
+            exit(EXIT_SUCCESS);
         }
         //else there's something dodgy with the arguments.
         else
@@ -153,7 +150,6 @@ int main(int argc, char *argv[])
         }
     }else if(bFlag && parsedFiles[0] != NULL) //at least one file to index was parsed into the program.
     {
-        printf("-> Starting to Build <-\n");
         setName(fileName);
         setSize(inputLength);
         get_files(index);

@@ -1,12 +1,2 @@
-zombie
-/Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/test_data/basic.txt
-string
-tester
-/Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/test_data/crazy.txt
-stdlib
-SOURCE
-define
-SOURCE
-define
-define
-printf
+/Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util
+/Users/owen/Documents/UWA/Year_2/Semester_2/CITS2002/Project2/trove_util/txt
