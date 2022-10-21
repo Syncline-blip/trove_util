@@ -71,6 +71,17 @@ int checkGZ(char fileToCheck[])
 
 }
 
+int fileCheck(char fileToCheck[])
+{
+    char* file = ".";
+    if(strstr(file, fileToCheck))
+    {
+        return 0;
+    }
+    return 1;
+
+}
+
 char* decompress(char * fileToOpen)
 {
     char buf[DEFAULT_SIZE];
@@ -141,7 +152,7 @@ int stringDigger(char *fName, char *sWord)
         if(strstr(line, sWord) != NULL)
         {
             existValue = 1;
-            printf("-> found in: %s\n", fName);
+            //printf("-> found in: %s\n", fName);
             break;
         }
 

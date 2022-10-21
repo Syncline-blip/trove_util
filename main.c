@@ -125,7 +125,8 @@ int main(int argc, char *argv[])
     else if(argc == 4 && fFlag)
     {
         //format: ./trove [-f trovefile] word
-        if(isFile(argv[2]))
+        printf("is file: %d\n",fileCheck(argv[2]) !=1);
+        if(fileCheck(argv[2]))
         {
             if(checkGZ(fileName) != 1)
             {
@@ -137,7 +138,7 @@ int main(int argc, char *argv[])
             exit(EXIT_SUCCESS);
         }
         //format: ./trove word [-f trovefile]
-        else if(isFile(argv[3]))
+        else if(fileCheck(argv[3]))
         {
             if(checkGZ(fileName) != 1)
             {

@@ -15,5 +15,6 @@ void populate(char *file,char *key);
 void setName(char *name);
 int checkString(char str1[], int size);
 int checkGZ(char fileToCheck[]);
-char decompress(char *fileToOpen);
+char *decompress(char *fileToOpen);
+int fileCheck(char fileToCheck[]);
 #endif
